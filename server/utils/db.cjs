@@ -1,0 +1,185 @@
+const Database = require('better-sqlite3');
+const path = require('path');
+
+const dbPath = path.join(__dirname, '../cache/data.sqlite');
+const db = new Database(dbPath);
+
+// Create tables for candidates and scan history
+db.exec(`
+CREATE TABLE IF NOT EXISTS squeezeCandidates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  symbol           TEXT    NOT NULL,
+  price            REAL,
+  volume           REAL,
+  rsi              REAL,
+  momentum         REAL,
+  volumeSpike      INTEGER,
+  support          REAL,
+  resistance       REAL,
+  floatPercent     REAL,
+  shortFloat       REAL,
+  score            INTEGER,
+  setupScore       INTEGER,
+  earlyCandidate   INTEGER,
+
+  -- scoreTicker fields
+  totalScore       REAL,
+  isTopPick        INTEGER,
+  combinedReasons  TEXT,
+  metrics          TEXT,
+
+  recommendation   TEXT,
+  suggestion       TEXT,
+  summary          TEXT,
+  buyPrice         REAL,
+  sellPrice        REAL,
+
+  -- GPT analysis fields
+  action               TEXT,
+  actionRationale      TEXT,
+  isDayTradeCandidate  INTEGER,
+  dayTradeBuyPrice     REAL,
+  dayTradeSellPrice    REAL,
+  longBuyPrice         REAL,
+  longSellPrice        REAL,
+
+  -- pre-market metrics
+  preMarketChange      REAL,
+  preMarketVolSpike    REAL,
+
+  reasons          TEXT,
+  setupReasons     TEXT,
+  timestamp        TEXT
+);
+
+CREATE TABLE IF NOT EXISTS history (
+  id             INTEGER PRIMARY KEY AUTOINCREMENT,
+  timestamp      TEXT,
+  candidateCount INTEGER
+);
+`);
+
+/**
+ * Save an array of results into the squeezeCandidates table and record history.**/
+
+function saveResults(results) {
+  const insertCandidate = db.prepare(`
+    INSERT INTO squeezeCandidates (
+      symbol, price, volume, rsi, momentum, volumeSpike,
+      support, resistance, floatPercent, shortFloat,
+      score, setupScore, earlyCandidate,
+
+      totalScore, isTopPick, combinedReasons, metrics,
+
+      recommendation, suggestion, summary,
+      buyPrice, sellPrice,
+
+      action, actionRationale, isDayTradeCandidate,
+      dayTradeBuyPrice, dayTradeSellPrice, longBuyPrice, longSellPrice,
+
+      preMarketChange, preMarketVolSpike,
+
+      reasons, setupReasons, timestamp
+    ) VALUES (
+      @symbol, @price, @volume, @rsi, @momentum, @volumeSpike,
+      @support, @resistance, @floatPercent, @shortFloat,
+      @score, @setupScore, @earlyCandidate,
+
+      @totalScore, @isTopPick, @combinedReasons, @metrics,
+
+      @recommendation, @suggestion, @summary,
+      @buyPrice, @sellPrice,
+
+      @action, @actionRationale, @isDayTradeCandidate,
+      @dayTradeBuyPrice, @dayTradeSellPrice, @longBuyPrice, @longSellPrice,
+
+      @preMarketChange, @preMarketVolSpike,
+
+      @reasons, @setupReasons, @timestamp
+    )
+  `);
+
+  const insertHistory = db.prepare(
+    `INSERT INTO history (timestamp, candidateCount) VALUES (?, ?)`
+  );
+
+  const now = new Date().toISOString();
+
+  const transaction = db.transaction((items) => {
+    for (const item of items) {
+      insertCandidate.run({
+        symbol:             item.symbol,
+        price:              item.price,
+        volume:             item.volume,
+        rsi:                item.rsi,
+        momentum:           item.momentum,
+        volumeSpike:        item.volumeSpike ? 1 : 0,
+        support:            item.support,
+        resistance:         item.resistance,
+        floatPercent:       item.float,
+        shortFloat:         item.shortFloat,
+        score:              item.score,
+        setupScore:         item.setupScore,
+        earlyCandidate:     item.earlyCandidate ? 1 : 0,
+
+        totalScore:         item.totalScore,
+        isTopPick:          item.isTopPick ? 1 : 0,
+        combinedReasons:    item.combinedReasons,
+        metrics:            JSON.stringify(item.metrics),
+
+        recommendation:     item.recommendation,
+        suggestion:         item.suggestion,
+        summary:            item.summary,
+        buyPrice:           item.buyPrice,
+        sellPrice:          item.sellPrice,
+
+        action:             item.action,
+        actionRationale:    item.actionRationale,
+        isDayTradeCandidate:item.isDayTradeCandidate ? 1 : 0,
+        dayTradeBuyPrice:   item.dayTradeBuyPrice,
+        dayTradeSellPrice:  item.dayTradeSellPrice,
+        longBuyPrice:       item.longBuyPrice,
+        longSellPrice:      item.longSellPrice,
+
+        preMarketChange:    item.preMarketChange,
+        preMarketVolSpike:  item.preMarketVolSpike,
+
+        reasons:            JSON.stringify(item.reasons),
+        setupReasons:       JSON.stringify(item.setupReasons),
+        timestamp:          now
+      });
+    }
+    insertHistory.run(now, items.length);
+  });
+
+  transaction(results);
+}
+
+/**
+ * Retrieve the most recent candidate entries (default 20)
+ * @param {number} limit
+ * @returns {Array<object>}
+ */
+function getLatestCandidates(limit = 20) {
+  return db.prepare(
+    `SELECT * FROM squeezeCandidates ORDER BY id DESC LIMIT ?`
+  ).all(limit);
+}
+
+/**
+ * Retrieve the scan history (default 10 entries)
+ * @param {number} limit
+ * @returns {Array<object>}
+ */
+function getScanHistory(limit = 10) {
+  return db.prepare(
+    `SELECT * FROM history ORDER BY id DESC LIMIT ?`
+  ).all(limit);
+}
+
+module.exports = {
+  db,
+  saveResults,
+  getLatestCandidates,
+  getScanHistory,
+};
