@@ -1,14 +1,19 @@
+// controllers/scannerController.cjs
 
 const {
   analyzeSqueezeCandidate,
-  analyzeEarlySetup, scoreTicker
+  analyzeEarlySetup,
+  scoreTicker
 } = require('../services/aiScoring.cjs');
-const { analyzeWithGPT }     = require('../services/gptAnalysis.cjs');
-const { getTopMovers }       = require('../services/moversService.cjs');
+const { analyzeWithGPT } = require('../services/gptAnalysis.cjs');
+const { getTopMovers } = require('../services/moversService.cjs');
 const { getFinnhubIndicators } = require('../services/finnhubService.cjs');
-const subscriptionManager    = require('../services/subscriptionManager.cjs');
-const { saveResults }        = require('../utils/db.cjs');
-const log                    = require('../utils/logger.cjs');
+const subscriptionManager = require('../services/subscriptionManager.cjs');
+const { saveResults, db } = require('../utils/db.cjs');
+const log = require('../utils/logger.cjs');
+
+// load the pre-built whitelist once
+const filterTickers = require('../data/filterTickers.json');
 
 // p-limit for concurrency control
 let pLimit;
@@ -60,56 +65,65 @@ async function analyzeMetrics(data) {
   const shortFloat = shortPercent;
 
   // 1) Combined technical score
-  const combined = scoreTicker({ price, avg20Volume, volume, volumeSpike,
-    rsi, momentum, support, resistance, floatPercent, shortPercent, daysToCover
+  const combined = scoreTicker({
+    price, avg20Volume, volume, volumeSpike,
+    rsi, momentum, support, resistance,
+    floatPercent, shortPercent, daysToCover
   });
 
-  // 2) Pre‐screen
+  // 2) Pre-screen
   const aiResult    = analyzeSqueezeCandidate({ rsi, shortFloat, volumeSpike, momentum });
   const setupResult = analyzeEarlySetup   ({ rsi, shortFloat, volumeSpike, momentum });
   if (aiResult.score < 2 && !setupResult.isEarlyCandidate) return null;
 
   // 3) Static suggestion & hybrid defaults
   const suggestion  = generateSuggestion(data);
-  // calculate both a limit and a market entry
   const limitBuy    = support ? +(support * 1.02).toFixed(2) : null;
   const marketBuy   = price;
   const defaultSell = limitBuy ? +(limitBuy * 1.15).toFixed(2) : null;
-  // hybrid: if momentum exceeds threshold, use market; otherwise use limit
   const MOM_THRESHOLD = 0.05;
-  const defaultBuy     = momentum > MOM_THRESHOLD
-                       ? marketBuy
-                       : limitBuy;
+  const defaultBuy  = momentum > MOM_THRESHOLD ? marketBuy : limitBuy;
 
-  let explanation   = suggestion;
-  let buyPrice      = defaultBuy;
-  let sellPrice     = defaultSell;
-
-  // default action/rationale
-  let action           = classifySignal({
+  let explanation     = suggestion;
+  let buyPrice        = defaultBuy;
+  let sellPrice       = defaultSell;
+  let action          = classifySignal({
     score: aiResult.score,
     earlyCandidate: setupResult.isEarlyCandidate,
     rsi, momentum
   });
-  let actionRationale  = explanation;
+  let actionRationale = explanation;
 
-  // 4) GPT‐driven analysis (if qualified)
+  // placeholders for GPT-overrides
+  let isDay   = false;
+  let dayBuy  = null;
+  let daySell = null;
+  let longBuy = null;
+  let longSell= null;
+
+  // 4) GPT-driven analysis (if qualified)
   if (aiResult.score >= 2) {
     try {
       const gpt = await analyzeWithGPT({
         symbol, price, rsi, shortFloat,
         volumeSpike, momentum,
         support, resistance,
-        fundamentals
+        fundamentals, preMarketChange, preMarketVolSpike
       });
+
       explanation     = gpt.explanation;
-      actionRationale = gpt.explanation;
       action          = gpt.action;
-      const gptBuy    = gpt.isDayTradeCandidate
-                        ? gpt.dayTradeBuyPrice
-                        : gpt.longBuyPrice;
-      buyPrice        = gptBuy != null ? gptBuy : defaultBuy;
-      sellPrice       = gpt.sellPrice != null ? gpt.sellPrice : defaultSell;
+      actionRationale = gpt.actionRationale;
+
+      buyPrice  = gpt.buyPrice  != null ? gpt.buyPrice  : defaultBuy;
+      sellPrice = gpt.sellPrice != null ? gpt.sellPrice : defaultSell;
+
+      isDay   = Boolean(gpt.isDayTradeCandidate);
+      dayBuy  = gpt.dayTradeBuyPrice;
+      daySell = gpt.dayTradeSellPrice;
+      longBuy = gpt.longBuyPrice;
+      longSell= gpt.longSellPrice;
+
     } catch (err) {
       log.warn(`⚠️ GPT failed for ${symbol}: ${err.message}`);
     }
@@ -137,21 +151,19 @@ async function analyzeMetrics(data) {
     suggestion,
     summary: explanation,
 
-    // wire action & rationale
     action,
     actionRationale,
 
     buyPrice,
     sellPrice,
 
-    // day- vs long- targets
-    isDayTradeCandidate: Boolean(action === 'Buy'),
+    isDayTradeCandidate: isDay,
     dayTradeBuyPrice:    dayBuy,
     dayTradeSellPrice:   daySell,
     longBuyPrice:        longBuy,
     longSellPrice:       longSell,
 
-    reasons: aiResult.reasons.join(', '),
+    reasons:      aiResult.reasons.join(', '),
     setupReasons: setupResult.setupReasons.join(', '),
 
     totalScore:      combined.totalScore,
@@ -161,16 +173,16 @@ async function analyzeMetrics(data) {
   };
 }
 
-
 /**
  * Main controller: orchestrates a two-phase scan
- * 1) Batch-fetch live metrics via getFinnhubIndicators
- * 2) Analyze those metrics via analyzeMetrics
+ * Uses the pre-built filterTickers.json for manual scans
  */
 async function analyzeMarket(req, res) {
   try {
-    // Phase 1: pre-screen tickers
-    const tickers = await getTopMovers();
+    const useFull = req.query.full === '1';
+    const whitelist = useFull ? null : filterTickers;
+
+    const tickers = await getTopMovers({ whitelist });
     log.info(`📈 Phase 1: ${tickers.length} tickers to check`);
 
     // Phase 2a: collect metrics in timed batches
@@ -196,7 +208,7 @@ async function analyzeMarket(req, res) {
       const mod = await import('p-limit');
       pLimit = mod.default;
     }
-    const limit = pLimit(5);
+    const limit    = pLimit(5);
     const analysis = allMetrics.map(data => limit(() => analyzeMetrics(data)));
     const results  = (await Promise.all(analysis)).filter(Boolean);
 
@@ -208,7 +220,13 @@ async function analyzeMarket(req, res) {
     saveResults(results);
 
     log.info(`📊 Finished scan: ${tickers.length} checked, ${results.length} candidates.`);
-    res.json(results);
+
+    const stamped = results.map(r => ({
+      ...r,
+      timestamp: new Date().toISOString()
+    }));
+
+    res.json(stamped);
   } catch (err) {
     log.error(`❌ analyzeMarket error: ${err.message}`);
     res.status(500).send('Scan failed');

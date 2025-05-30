@@ -105,6 +105,8 @@ const ScannerCardGrid = () => {
   useEffect(() => {
     fetchResults();
     fetchHistory();
+    const id = setInterval(fetchResults, 12 * 60 * 60 * 1000);
+    return () => clearInterval(id);
   }, []);
 
   // — apply filtering & sorting —

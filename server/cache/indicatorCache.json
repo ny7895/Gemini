@@ -112,15 +112,15 @@
     }
   },
   "CAPT": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "CAPT",
-      "price": 0.769,
-      "rsi": 34.55,
-      "momentum": 0.0334,
+      "price": 1.03,
+      "rsi": 29.23,
+      "momentum": -0.0323,
       "volumeSpike": true,
       "support": 0.38999998569488525,
-      "resistance": 0.7689999938011169,
+      "resistance": 1.031999945640564,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -196,13 +196,13 @@
     }
   },
   "ECDA": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "ECDA",
-      "price": 0.2647,
-      "rsi": 49.35,
-      "momentum": 0.0497,
-      "volumeSpike": false,
+      "price": 0.3182,
+      "rsi": 49.67,
+      "momentum": -0.0163,
+      "volumeSpike": true,
       "support": 0.25099998712539673,
       "resistance": 0.4099999964237213,
       "floatPercent": null,
@@ -238,15 +238,15 @@
     }
   },
   "FTRK": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "FTRK",
-      "price": 4.39,
+      "price": 4.8,
       "rsi": null,
       "momentum": -0.1779,
-      "volumeSpike": false,
+      "volumeSpike": true,
       "support": 3.2799999713897705,
-      "resistance": 4.389999866485596,
+      "resistance": 4.800000190734863,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -350,15 +350,15 @@
     }
   },
   "IMNN": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "IMNN",
-      "price": 1.99,
-      "rsi": 9.8,
-      "momentum": 0.0476,
+      "price": 2.5318,
+      "rsi": 10,
+      "momentum": 0,
       "volumeSpike": false,
       "support": 0.4000000059604645,
-      "resistance": 2.2699999809265137,
+      "resistance": 2.554800033569336,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -392,15 +392,15 @@
     }
   },
   "INTS": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "INTS",
-      "price": 0.389,
-      "rsi": 16.72,
-      "momentum": 0.0204,
+      "price": 0.42275,
+      "rsi": 21.26,
+      "momentum": 0.0519,
       "volumeSpike": true,
       "support": 0.3140000104904175,
-      "resistance": 0.6000000238418579,
+      "resistance": 0.5879999995231628,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -504,12 +504,12 @@
     }
   },
   "NVVE": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "NVVE",
-      "price": 1.12,
-      "rsi": 49.6,
-      "momentum": 0.0423,
+      "price": 1.19,
+      "rsi": 50.05,
+      "momentum": -0.0249,
       "volumeSpike": false,
       "support": 0.8989999890327454,
       "resistance": 2.7799999713897705,
@@ -546,15 +546,15 @@
     }
   },
   "PDYN": {
-    "ts": 1748555573986,
+    "ts": 1748618846352,
     "data": {
       "symbol": "PDYN",
-      "price": 7.72,
-      "rsi": 66.32,
-      "momentum": 0.023,
-      "volumeSpike": true,
+      "price": 8.225,
+      "rsi": 68.27,
+      "momentum": -0.013,
+      "volumeSpike": false,
       "support": 5.679999828338623,
-      "resistance": 7.730000019073486,
+      "resistance": 8.190099716186523,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -588,15 +588,15 @@
     }
   },
   "SBET": {
-    "ts": 1748555573986,
+    "ts": 1748627714518,
     "data": {
       "symbol": "SBET",
-      "price": 79.21,
-      "rsi": 50.49,
-      "momentum": -0.1111,
+      "price": 82.6005,
+      "rsi": 46.54,
+      "momentum": -0.069,
       "volumeSpike": true,
       "support": 2.7899999618530273,
-      "resistance": 79.20999908447266,
+      "resistance": 83.06500244140625,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -686,15 +686,15 @@
     }
   },
   "VIVK": {
-    "ts": 1748555573986,
+    "ts": 1748618846352,
     "data": {
       "symbol": "VIVK",
-      "price": 0.8498,
-      "rsi": 27.79,
-      "momentum": 0.1838,
+      "price": 1.12,
+      "rsi": 36.32,
+      "momentum": 0.1111,
       "volumeSpike": true,
       "support": 0.7070000171661377,
-      "resistance": 1.0654000043869019,
+      "resistance": 1.1200000047683716,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -779,6 +779,328 @@
       "volumeSpike": true,
       "support": 0.6800000071525574,
       "resistance": 1.0499999523162842,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "GWH": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "GWH",
+      "price": 1.53,
+      "rsi": 43.4,
+      "momentum": -0.0508,
+      "volumeSpike": true,
+      "support": 0.8199999928474426,
+      "resistance": 2.799999952316284,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "TLYS": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "TLYS",
+      "price": 1.2382,
+      "rsi": 27.41,
+      "momentum": 0.02,
+      "volumeSpike": true,
+      "support": 0.6899999976158142,
+      "resistance": 1.5299999713897705,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "APDN": {
+    "ts": 1748616604118,
+    "data": {
+      "symbol": "APDN",
+      "price": 0.3411,
+      "rsi": 19.57,
+      "momentum": -0.033,
+      "volumeSpike": true,
+      "support": 0.33000001311302185,
+      "resistance": 0.9100000262260437,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "ATHA": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "ATHA",
+      "price": 0.3155,
+      "rsi": 45.93,
+      "momentum": -0.0208,
+      "volumeSpike": true,
+      "support": 0.23899999260902405,
+      "resistance": 0.3154999911785126,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "BLRX": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "BLRX",
+      "price": 5.3113,
+      "rsi": 57.02,
+      "momentum": 0.0087,
+      "volumeSpike": true,
+      "support": 3.0899999141693115,
+      "resistance": 5.339900016784668,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "BMGL": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "BMGL",
+      "price": 3.0811,
+      "rsi": 29.57,
+      "momentum": 0.0049,
+      "volumeSpike": true,
+      "support": 1.0199999809265137,
+      "resistance": 4.800000190734863,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "BNAI": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "BNAI",
+      "price": 0.2521,
+      "rsi": 24.82,
+      "momentum": -0.0028,
+      "volumeSpike": true,
+      "support": 0.24699999392032623,
+      "resistance": 0.36000001430511475,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "BSLK": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "BSLK",
+      "price": 3.06,
+      "rsi": 37.57,
+      "momentum": -0.0187,
+      "volumeSpike": true,
+      "support": 1.809999942779541,
+      "resistance": 6.900000095367432,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "GITS": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "GITS",
+      "price": 2.09,
+      "rsi": 57.77,
+      "momentum": -0.0235,
+      "volumeSpike": true,
+      "support": 0.949999988079071,
+      "resistance": 2.080699920654297,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "INHD": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "INHD",
+      "price": 1.21,
+      "rsi": 19.95,
+      "momentum": -0.0241,
+      "volumeSpike": false,
+      "support": 1.1100000143051147,
+      "resistance": 7.170000076293945,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "INOD": {
+    "ts": 1748618846352,
+    "data": {
+      "symbol": "INOD",
+      "price": 40.66,
+      "rsi": 48.75,
+      "momentum": -0.0364,
+      "volumeSpike": false,
+      "support": 34.619998931884766,
+      "resistance": 41.11000061035156,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "RRGB": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "RRGB",
+      "price": 5.145,
+      "rsi": 56.3,
+      "momentum": 0.0104,
+      "volumeSpike": true,
+      "support": 2.630000114440918,
+      "resistance": 5.130000114440918,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "TIRX": {
+    "ts": 1748618846352,
+    "data": {
+      "symbol": "TIRX",
+      "price": 1.995,
+      "rsi": 40.92,
+      "momentum": 0.0481,
+      "volumeSpike": true,
+      "support": 1.3600000143051147,
+      "resistance": 1.9950000047683716,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "TSSI": {
+    "ts": 1748618846352,
+    "data": {
+      "symbol": "TSSI",
+      "price": 13.58,
+      "rsi": 66.55,
+      "momentum": -0.0916,
+      "volumeSpike": false,
+      "support": 6.840000152587891,
+      "resistance": 15.4399995803833,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "VVPR": {
+    "ts": 1748618846352,
+    "data": {
+      "symbol": "VVPR",
+      "price": 4.76,
+      "rsi": 79.34,
+      "momentum": -0.0168,
+      "volumeSpike": true,
+      "support": 3.319999933242798,
+      "resistance": 6.809999942779541,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "WLDS": {
+    "ts": 1748618846352,
+    "data": {
+      "symbol": "WLDS",
+      "price": 1.7901,
+      "rsi": 48,
+      "momentum": 0.1006,
+      "volumeSpike": false,
+      "support": 1.3899999856948853,
+      "resistance": 1.7900999784469604,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "BENF": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "BENF",
+      "price": 0.4624,
+      "rsi": 61.15,
+      "momentum": -0.0106,
+      "volumeSpike": true,
+      "support": 0.2800000011920929,
+      "resistance": 0.46700000762939453,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "CLBR": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "CLBR",
+      "price": 15.08,
+      "rsi": 63.34,
+      "momentum": 0.0165,
+      "volumeSpike": false,
+      "support": 12.09000015258789,
+      "resistance": 15.09000015258789,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "FMST": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "FMST",
+      "price": 3.6384,
+      "rsi": 73.9,
+      "momentum": -0.1471,
+      "volumeSpike": false,
+      "support": 0.8700000047683716,
+      "resistance": 3.7699999809265137,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "HKPD": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "HKPD",
+      "price": 1.16,
+      "rsi": 49.18,
+      "momentum": -0.0924,
+      "volumeSpike": false,
+      "support": 0.8799999952316284,
+      "resistance": 1.2899999618530273,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "LFMD": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "LFMD",
+      "price": 11.945,
+      "rsi": 91,
+      "momentum": -0.0108,
+      "volumeSpike": false,
+      "support": 7.25,
+      "resistance": 11.949999809265137,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "RYET": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "RYET",
+      "price": 12.345,
+      "rsi": 60.77,
+      "momentum": 0.0261,
+      "volumeSpike": false,
+      "support": 6.110000133514404,
+      "resistance": 14.460000038146973,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "SLE": {
+    "ts": 1748627714518,
+    "data": {
+      "symbol": "SLE",
+      "price": 0.207901,
+      "rsi": 24.65,
+      "momentum": -0.0622,
+      "volumeSpike": true,
+      "support": 0.15000000596046448,
+      "resistance": 0.3700000047683716,
       "floatPercent": null,
       "shortPercent": null
     }
