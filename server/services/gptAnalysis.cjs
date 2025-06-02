@@ -29,7 +29,7 @@ async function analyzeWithGPT(params) {
     preMarketVolSpike
   } = params;
 
-  // 1) System prompt locks it to _only_ your data
+  // 1) System prompt
   const system = {
     role: "system",
     content: `

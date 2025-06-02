@@ -8,24 +8,23 @@ const { getLatestCandidates, getScanHistory } = require('../utils/db.cjs');
 // Helper to map a DB row into API shape
 function mapRow(r) {
   return {
-    symbol:           r.symbol,
-    price:            r.price,
-    volume:           r.volume,
-    rsi:              r.rsi,
-    momentum:         r.momentum,
-    volumeSpike:      Boolean(r.volumeSpike),
-    support:          r.support,
-    resistance:       r.resistance,
-    floatPercent:     r.floatPercent,
-    shortFloat:       r.shortFloat,
-    preMarketChange:   r.preMarketChange,
-    preMarketVolSpike: r.preMarketVolSpike,
+    symbol:              r.symbol,
+    price:               r.price,
+    volume:              r.volume,
+    rsi:                 r.rsi,
+    momentum:            r.momentum,
+    volumeSpike:         Boolean(r.volumeSpike),
+    support:             r.support,
+    resistance:          r.resistance,
+    floatPercent:        r.floatPercent,
+    shortFloat:          r.shortFloat,
+    preMarketChange:     r.preMarketChange,
+    preMarketVolSpike:   r.preMarketVolSpike,
 
-    score:            r.score,
-    setupScore:       r.setupScore,
-    earlyCandidate:   Boolean(r.earlyCandidate),
+    score:               r.score,
+    setupScore:          r.setupScore,
+    earlyCandidate:      Boolean(r.earlyCandidate),
 
-    // GPT fields
     action:              r.action,
     actionRationale:     r.actionRationale,
     isDayTradeCandidate: Boolean(r.isDayTradeCandidate),
@@ -34,31 +33,42 @@ function mapRow(r) {
     longBuyPrice:        r.longBuyPrice,
     longSellPrice:       r.longSellPrice,
 
-    totalScore:       r.totalScore,
-    isTopPick:        Boolean(r.isTopPick),
-    combinedReasons:  Array.isArray(r.combinedReasons)
-                        ? r.combinedReasons
-                        : (r.combinedReasons
-                          ? r.combinedReasons.split(', ')
-                          : []),
-    metrics:          r.metrics ? JSON.parse(r.metrics) : {},
+    totalScore:          r.totalScore,
+    isTopPick:           Boolean(r.isTopPick),
+    combinedReasons:     Array.isArray(r.combinedReasons)
+                            ? r.combinedReasons
+                            : (r.combinedReasons
+                              ? r.combinedReasons.split(', ')
+                              : []),
+    metrics:             r.metrics ? JSON.parse(r.metrics) : {},
 
-    recommendation:   r.recommendation,
-    suggestion:       r.suggestion,
-    summary:          r.summary,
-    buyPrice:         r.buyPrice,
-    sellPrice:        r.sellPrice,
+    recommendation:      r.recommendation,
+    suggestion:          r.suggestion,
+    summary:             r.summary,
+    buyPrice:            r.buyPrice,
+    sellPrice:           r.sellPrice,
 
-    reasons:          JSON.parse(r.reasons || '[]'),
-    setupReasons:     JSON.parse(r.setupReasons || '[]'),
-    timestamp:        r.timestamp
+    reasons:             JSON.parse(r.reasons || '[]'),
+    setupReasons:        JSON.parse(r.setupReasons || '[]'),
+    callPick:            r.callPick ? JSON.parse(r.callPick) : null,
+
+    callAction:          r.callAction,
+    callRationale:       r.callRationale,
+    callExitPlan:        r.callExitPlan,
+    putPick:             r.putPick ? JSON.parse(r.putPick) : null,
+
+    putAction:           r.putAction,
+    putRationale:        r.putRationale,
+    putExitPlan:         r.putExitPlan,
+
+    timestamp:           r.timestamp
   };
 }
 
 // Return latest squeeze candidates
 router.get('/candidates', (req, res) => {
   try {
-    const rows = getLatestCandidates();
+    const rows    = getLatestCandidates();
     const results = rows.map(mapRow);
     res.json(results);
   } catch (err) {
@@ -95,10 +105,10 @@ router.get('/history', (req, res) => {
   }
 });
 
-//  Run full market analysis
+// Run full market analysis
 router.get('/analyze', analyzeMarket);
 
-//  Health check endpoint
+// Health check endpoint
 router.get('/ping', (req, res) => {
   res.send('Scanner API is alive 🧠');
 });

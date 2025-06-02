@@ -85,7 +85,7 @@ async function runNightlySnapshot() {
       const filtered = snaps.filter(r => r.lastClose < 0.01).length;
       const remain   = total - filtered;
   
-      // 2) run the actual scan via your API endpoint
+      // 2) run the actual scan
       const resp    = await axios.get(SCAN_URL);
       const results = resp.data;
   

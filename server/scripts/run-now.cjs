@@ -1,6 +1,5 @@
+const { runNightlySnapshot } = require('../services/scheduler.cjs');
 
-const { runPreMarketScan } = require('../services/scheduler.cjs');
-
-runPreMarketScan()
-  .then(() => console.log('✅ Manual scan complete'))
+runNightlySnapshot()
+  .then(() => console.log('✅ Nightly scan complete'))
   .catch(err => console.error('❌ Scan failed', err));

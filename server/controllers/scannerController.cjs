@@ -1,5 +1,3 @@
-// controllers/scannerController.cjs
-
 const {
   analyzeSqueezeCandidate,
   analyzeEarlySetup,
@@ -11,8 +9,7 @@ const { getFinnhubIndicators } = require('../services/finnhubService.cjs');
 const subscriptionManager = require('../services/subscriptionManager.cjs');
 const { saveResults, db } = require('../utils/db.cjs');
 const log = require('../utils/logger.cjs');
-
-// load the pre-built whitelist once
+const { analyzeOptionsWithGPT } = require('../services/optionsAnalysisService.cjs');
 const filterTickers = require('../data/filterTickers.json');
 
 // p-limit for concurrency control
@@ -213,6 +210,47 @@ async function analyzeMarket(req, res) {
     const results  = (await Promise.all(analysis)).filter(Boolean);
 
     log.info(`🎯 Analysis done – found ${results.length} candidates.`);
+
+    // ——— Inject options analysis ———
+        // ——— Inject options analysis ———
+        for (const candidate of results) {
+          try {
+            const {
+              callPick,
+              callAction,
+              callRationale,
+              callExitPlan,
+              putPick,
+              putAction,
+              putRationale,
+              putExitPlan
+            } = await analyzeOptionsWithGPT({
+              symbol:     candidate.symbol,
+              metrics:    candidate,
+              isDayTrade: candidate.isDayTradeCandidate
+            });
+    
+            // only assign if i got a real chain back
+            candidate.callPick      = callPick;
+            candidate.callAction    = callAction;
+            candidate.callRationale = callRationale;
+            candidate.callExitPlan  = callExitPlan;
+            candidate.putPick       = putPick;
+            candidate.putAction     = putAction;
+            candidate.putRationale  = putRationale;
+            candidate.putExitPlan   = putExitPlan;
+    
+          } catch (err) {
+            // if Polygon says 404,skip options for this symbol
+            if (err.response && err.response.status === 404) {
+              console.warn(`⚠️ No options chain for ${candidate.symbol}, skipping options analysis.`);
+              continue;
+            }
+            // other errors bubble up or get logged
+            console.error(`⚠️ options analysis failed for ${candidate.symbol}:`, err.message);
+          }
+        }
+    
 
     // Subscribe top candidates, save, and return
     results.sort((a, b) => b.score - a.score);

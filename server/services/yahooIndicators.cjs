@@ -5,7 +5,7 @@ const technicals   = require('../utils/technicals.cjs');
 
 async function getYahooIndicators(symbol) {
   try {
-    // 1) Get the latest quote (includes both pre and regular fields)
+    // 1) Get the latest quote
     const quote = await yahooFinance.quote(symbol);
 
     // 2) Decide whether we're in pre-market hours

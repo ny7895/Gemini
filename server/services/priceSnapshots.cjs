@@ -20,8 +20,6 @@ async function buildFilterList() {
   for (let i = 0; i < RAW_TICKERS.length; i += BATCH_SIZE) {
     const batch = RAW_TICKERS.slice(i, i + BATCH_SIZE);
 
-    // process this batch in series (you could also do Promise.all here,
-    // but serial ensures you don't exceed per-second bursts)
     for (const symbol of batch) {
       if (symbol.includes('^')) continue;
 
@@ -49,7 +47,7 @@ async function buildFilterList() {
     }
   }
 
-  // 1) save into priceSnapshots via our shared DB util (handles ts column)
+  // 1) save into priceSnapshots
   savePriceSnapshots(snapshots);
 
   // 2) write out filtered tickers for the scanner whitelist

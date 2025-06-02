@@ -1,10 +1,8 @@
-// utils/db.cjs
+const Database = require('better-sqlite3')
+const path     = require('path')
 
-const Database = require('better-sqlite3');
-const path = require('path');
-
-const dbPath = path.join(__dirname, '../cache/data.sqlite');
-const db = new Database(dbPath);
+const dbPath = path.join(__dirname, '../cache/data.sqlite')
+const db     = new Database(dbPath)
 
 // Create tables for price snapshots, candidates, and scan history
 db.exec(`
@@ -15,46 +13,56 @@ db.exec(`
   );
 
   CREATE TABLE IF NOT EXISTS squeezeCandidates (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    symbol           TEXT    NOT NULL,
-    price            REAL,
-    volume           REAL,
-    rsi              REAL,
-    momentum         REAL,
-    volumeSpike      INTEGER,
-    support          REAL,
-    resistance       REAL,
-    floatPercent     REAL,
-    shortFloat       REAL,
-    score            INTEGER,
-    setupScore       INTEGER,
-    earlyCandidate   INTEGER,
+    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+    symbol                TEXT    NOT NULL,
+    price                 REAL,
+    volume                REAL,
+    rsi                   REAL,
+    momentum              REAL,
+    volumeSpike           INTEGER,
+    support               REAL,
+    resistance            REAL,
+    floatPercent          REAL,
+    shortFloat            REAL,
+    score                 INTEGER,
+    setupScore            INTEGER,
+    earlyCandidate        INTEGER,
 
-    totalScore       REAL,
-    isTopPick        INTEGER,
-    combinedReasons  TEXT,
-    metrics          TEXT,
+    totalScore            REAL,
+    isTopPick             INTEGER,
+    combinedReasons       TEXT,
+    metrics               TEXT,
 
-    recommendation   TEXT,
-    suggestion       TEXT,
-    summary          TEXT,
-    buyPrice         REAL,
-    sellPrice        REAL,
+    recommendation        TEXT,
+    suggestion            TEXT,
+    summary               TEXT,
+    buyPrice              REAL,
+    sellPrice             REAL,
 
-    action               TEXT,
-    actionRationale      TEXT,
-    isDayTradeCandidate  INTEGER,
-    dayTradeBuyPrice     REAL,
-    dayTradeSellPrice    REAL,
-    longBuyPrice         REAL,
-    longSellPrice        REAL,
+    action                TEXT,
+    actionRationale       TEXT,
+    isDayTradeCandidate   INTEGER,
+    dayTradeBuyPrice      REAL,
+    dayTradeSellPrice     REAL,
+    longBuyPrice          REAL,
+    longSellPrice         REAL,
 
-    preMarketChange      REAL,
-    preMarketVolSpike    REAL,
+    preMarketChange       REAL,
+    preMarketVolSpike     REAL,
 
-    reasons          TEXT,
-    setupReasons     TEXT,
-    timestamp        TEXT
+    reasons               TEXT,
+    setupReasons          TEXT,
+
+    callPick              TEXT,
+    putPick               TEXT,
+    callAction            TEXT,
+    callRationale         TEXT,
+    putAction             TEXT,
+    putRationale          TEXT,
+    callExitPlan          TEXT,
+    putExitPlan           TEXT,
+
+    timestamp             TEXT
   );
 
   CREATE TABLE IF NOT EXISTS history (
@@ -62,7 +70,7 @@ db.exec(`
     timestamp      TEXT,
     candidateCount INTEGER
   );
-`);
+`)
 
 /**
  * Upsert a single price snapshot
@@ -73,20 +81,20 @@ const upsertSnapshotStmt = db.prepare(`
   ON CONFLICT(symbol) DO UPDATE SET
     lastClose = excluded.lastClose,
     ts        = excluded.ts
-`);
+`)
 
 /**
  * Save an array of snapshots into priceSnapshots.
  * @param {Array<{symbol:string,lastClose:number}>} snapshots
  */
 function savePriceSnapshots(snapshots) {
-  const now = new Date().toISOString();
+  const now = new Date().toISOString()
   const transaction = db.transaction((items) => {
     for (const { symbol, lastClose } of items) {
-      upsertSnapshotStmt.run({ symbol, lastClose, ts: now });
+      upsertSnapshotStmt.run({ symbol, lastClose, ts: now })
     }
-  });
-  transaction(snapshots);
+  })
+  transaction(snapshots)
 }
 
 /**
@@ -94,7 +102,7 @@ function savePriceSnapshots(snapshots) {
  * @returns {Array<{symbol:string,lastClose:number,ts:string}>}
  */
 function getPriceSnapshots() {
-  return db.prepare(`SELECT symbol, lastClose, ts FROM priceSnapshots`).all();
+  return db.prepare(`SELECT symbol, lastClose, ts FROM priceSnapshots`).all()
 }
 
 /**
@@ -117,7 +125,13 @@ function saveResults(results) {
 
       preMarketChange, preMarketVolSpike,
 
-      reasons, setupReasons, timestamp
+      reasons, setupReasons,
+
+      callPick, putPick,
+      callAction, callRationale, putAction, putRationale,
+      callExitPlan, putExitPlan,
+
+      timestamp
     ) VALUES (
       @symbol, @price, @volume, @rsi, @momentum, @volumeSpike,
       @support, @resistance, @floatPercent, @shortFloat,
@@ -133,15 +147,21 @@ function saveResults(results) {
 
       @preMarketChange, @preMarketVolSpike,
 
-      @reasons, @setupReasons, @timestamp
+      @reasons, @setupReasons,
+
+      @callPick, @putPick,
+      @callAction, @callRationale, @putAction, @putRationale,
+      @callExitPlan, @putExitPlan,
+
+      @timestamp
     )
-  `);
+  `)
 
   const insertHistory = db.prepare(`
     INSERT INTO history (timestamp, candidateCount) VALUES (?, ?)
-  `);
+  `)
 
-  const now = new Date().toISOString();
+  const now = new Date().toISOString()
   const transaction = db.transaction((items) => {
     for (const item of items) {
       insertCandidate.run({
@@ -183,13 +203,23 @@ function saveResults(results) {
 
         reasons:            JSON.stringify(item.reasons),
         setupReasons:       JSON.stringify(item.setupReasons),
-        timestamp:          now
-      });
-    }
-    insertHistory.run(now, items.length);
-  });
 
-  transaction(results);
+        callPick:           JSON.stringify(item.callPick),
+        putPick:            JSON.stringify(item.putPick),
+        callAction:         item.callAction,
+        callRationale:      item.callRationale,
+        putAction:          item.putAction,
+        putRationale:       item.putRationale,
+        callExitPlan:       item.callExitPlan,
+        putExitPlan:        item.putExitPlan,
+
+        timestamp:          now
+      })
+    }
+    insertHistory.run(now, items.length)
+  })
+
+  transaction(results)
 }
 
 /**
@@ -198,7 +228,7 @@ function saveResults(results) {
 function getLatestCandidates(limit = 20) {
   return db.prepare(
     `SELECT * FROM squeezeCandidates ORDER BY id DESC LIMIT ?`
-  ).all(limit);
+  ).all(limit)
 }
 
 /**
@@ -207,7 +237,7 @@ function getLatestCandidates(limit = 20) {
 function getScanHistory(limit = 10) {
   return db.prepare(
     `SELECT * FROM history ORDER BY id DESC LIMIT ?`
-  ).all(limit);
+  ).all(limit)
 }
 
 module.exports = {
@@ -216,5 +246,5 @@ module.exports = {
   getPriceSnapshots,
   saveResults,
   getLatestCandidates,
-  getScanHistory,
-};
+  getScanHistory
+}

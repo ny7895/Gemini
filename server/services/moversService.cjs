@@ -29,7 +29,7 @@ async function getTopMovers(options = {}) {
   const {
     whitelist,
     priceMax     = 85,
-    volumeMin    = 1_000_000,
+    volumeMin    = 800_000,
     floatMax     = 50_000_000,
     changePctMin = 2.5,
     preMarketMin = 8

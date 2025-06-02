@@ -50,7 +50,7 @@ const ScannerCardGrid = () => {
     const parsed = data.map((item) => ({
       ...item,
 
-      // bring in the new pre-market fields (use `item`, not `r`)
+      // bring in the pre-market fields
       preMarketChange: item.preMarketChange ?? null,
       preMarketVolSpike: item.preMarketVolSpike ?? null,
       combinedReasons: Array.isArray(item.combinedReasons)
@@ -69,6 +69,12 @@ const ScannerCardGrid = () => {
       dayTradeSellPrice: item.dayTradeSellPrice,
       longBuyPrice: item.longBuyPrice,
       longSellPrice: item.longSellPrice,
+      callAction: item.callAction || '',
+      callRationale: item.callRationale || '',
+      putAction: item.putAction || '',
+      putRationale: item.putRationale || '',
+      callExitPlan: item.callExitPlan || '',
+      putExitPlan: item.putExitPlan || '',
     }));
 
     setCandidates(parsed);
@@ -370,6 +376,34 @@ const ScannerCardGrid = () => {
               <div className="text-gray-600 text-xs italic mt-6">
                 <h4 className="font-medium">GPT analysis</h4>
                 <p>{c.summary}</p>
+              </div>
+              <div className="mt-6">
+                <h4 className="font-medium mb-2">Options Suggestions</h4>
+                <table className="w-full text-sm text-left text-gray-700 border">
+                  <thead>
+                    <tr>
+                      <th className="px-2 py-1 border">Type</th>
+                      <th className="px-2 py-1 border">Entry Action</th>
+                      <th className="px-2 py-1 border">Entry Rationale</th>
+                      <th className="px-2 py-1 border">Exit Plan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-2 py-1 border">Call</td>
+                      <td className="px-2 py-1 border">{c.callAction}</td>
+                      <td className="px-2 py-1 border">{c.callRationale}</td>
+                      <td className="px-2 py-1 border">{c.callExitPlan}</td>
+
+                    </tr>
+                    <tr>
+                      <td className="px-2 py-1 border">Put</td>
+                      <td className="px-2 py-1 border">{c.putAction}</td>
+                      <td className="px-2 py-1 border">{c.putRationale}</td>
+                      <td className="px-2 py-1 border">{c.putExitPlan}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           ))}
