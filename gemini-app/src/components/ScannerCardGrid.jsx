@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+const base = import.meta.env.VITE_API_BASE_URL;
 
 // ——— Reusable badge for numeric scores ———
 const Badge = ({ score, label = 'Score' }) => {
@@ -52,7 +53,7 @@ const ScannerCardGrid = () => {
   const fetchResults = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/scanner/candidates');
+      const res = await fetch(`${base}/api/scanner/candidates`);
       const data = await res.json();
 
       const parsed = data.map((item) => ({
@@ -93,7 +94,7 @@ const ScannerCardGrid = () => {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch('/api/scanner/history');
+      const res = await fetch(`${base}/api/scanner/history`);
       const data = await res.json();
       setHistory([...data].reverse());
       if (data.length) {
@@ -109,7 +110,7 @@ const ScannerCardGrid = () => {
     setLoading(true);
 
     // 1) Kick off the background scan
-    await fetch('/api/scanner/analyze').catch((err) => {
+    await fetch(`${base}/api/scanner/analyze`).catch((err) => {
       console.error('Failed to start scan:', err);
       setScanning(false);
       setLoading(false);
@@ -118,7 +119,7 @@ const ScannerCardGrid = () => {
     // 2) Immediately get whatever timestamp is currently at the top
     let lastTimestamp = null;
     try {
-      const initRes = await fetch('/api/scanner/candidates');
+      const initRes = await fetch(`${base}/api/scanner/candidates`);
       const initData = await initRes.json();
       lastTimestamp = initData[0]?.timestamp || null;
     } catch (err) {
@@ -133,7 +134,7 @@ const ScannerCardGrid = () => {
     while (Date.now() - startTime < TIMEOUT_MS) {
       await new Promise((r) => setTimeout(r, POLL_INTERVAL));
       try {
-        const res = await fetch('/api/scanner/candidates');
+        const res = await fetch(`${base}/api/scanner/candidates`);
         const data = await res.json();
 
         const newTimestamp = data[0]?.timestamp || null;
@@ -522,34 +523,34 @@ const ScannerCardGrid = () => {
                     </tr>
                   </thead>
                   <tbody>
-                  <tr>
-  <td className="px-2 py-1 border">Call</td>
-  <td className="px-2 py-1 border">
-    {c.callPick?.contractSymbol || '—'}
-  </td>
-  <td className="px-2 py-1 border">
-    {c.callPick?.strike != null
-      ? `$${c.callPick.strike.toFixed(2)} / ${c.callPick.expiry}`
-      : '—'}
-  </td>
-  <td className="px-2 py-1 border">{c.callAction}</td>
-  <td className="px-2 py-1 border">{c.callRationale}</td>
-  <td className="px-2 py-1 border">{c.callExitPlan}</td>
-</tr>
-<tr>
-  <td className="px-2 py-1 border">Put</td>
-  <td className="px-2 py-1 border">
-    {c.putPick?.contractSymbol || '—'}
-  </td>
-  <td className="px-2 py-1 border">
-    {c.putPick?.strike != null
-      ? `$${c.putPick.strike.toFixed(2)} / ${c.putPick.expiry}`
-      : '—'}
-  </td>
-  <td className="px-2 py-1 border">{c.putAction}</td>
-  <td className="px-2 py-1 border">{c.putRationale}</td>
-  <td className="px-2 py-1 border">{c.putExitPlan}</td>
-</tr>
+                    <tr>
+                      <td className="px-2 py-1 border">Call</td>
+                      <td className="px-2 py-1 border">
+                        {c.callPick?.contractSymbol || '—'}
+                      </td>
+                      <td className="px-2 py-1 border">
+                        {c.callPick?.strike != null
+                          ? `$${c.callPick.strike.toFixed(2)} / ${c.callPick.expiry}`
+                          : '—'}
+                      </td>
+                      <td className="px-2 py-1 border">{c.callAction}</td>
+                      <td className="px-2 py-1 border">{c.callRationale}</td>
+                      <td className="px-2 py-1 border">{c.callExitPlan}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-2 py-1 border">Put</td>
+                      <td className="px-2 py-1 border">
+                        {c.putPick?.contractSymbol || '—'}
+                      </td>
+                      <td className="px-2 py-1 border">
+                        {c.putPick?.strike != null
+                          ? `$${c.putPick.strike.toFixed(2)} / ${c.putPick.expiry}`
+                          : '—'}
+                      </td>
+                      <td className="px-2 py-1 border">{c.putAction}</td>
+                      <td className="px-2 py-1 border">{c.putRationale}</td>
+                      <td className="px-2 py-1 border">{c.putExitPlan}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
