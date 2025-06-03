@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,jsx,cjs}\""
-
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.8",

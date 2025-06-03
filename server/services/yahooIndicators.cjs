@@ -1,116 +1,204 @@
-// services/yahooService.cjs
+const yahooFinance = require('yahoo-finance2').default; // v2
+const yahooLimiter = require('../utils/yahooLimiter.cjs');
+const technicals    = require('../utils/technicals.cjs');
 
-const yahooFinance = require('yahoo-finance2').default;
-const technicals   = require('../utils/technicals.cjs');
-
-async function getYahooIndicators(symbol) {
+async function getYahooIndicators(symbol, lookbackDays = 20) {
   try {
-    // 1) Get the latest quote
-    const quote = await yahooFinance.quote(symbol);
+    // ─── 1) QUOTE DATA (v2 structure) ───────────────────────────────────────
+    let quote;
+    try {
+      quote = await yahooLimiter.schedule(() =>
+        yahooFinance.quote(symbol, {
+          fields: [
+            'regularMarketPrice',
+            'regularMarketVolume',
+            'preMarketPrice',
+            'preMarketChange',
+            'marketState',
+            'regularMarketPreviousClose'
+          ]
+        })
+      );
+    } catch (err) {
+      console.warn(`[yahooIndicators] ${symbol} · quote() failed:`, err.message);
+      return null;
+    }
 
-    // 2) Decide whether we're in pre-market hours
-    const now  = new Date();
-    const h = now.getHours(), m = now.getMinutes();
-    const isPreMarket = (h >= 4 && (h < 9 || (h === 9 && m < 30)));
+    if (!quote || !quote.regularMarketPrice) {
+      console.warn(`[yahooIndicators] ${symbol} · Invalid quote data`);
+      return null;
+    }
 
-    // 3) Pull the price/volume from the appropriate session
-    const priceField  = isPreMarket ? 'preMarketPrice'      : 'regularMarketPrice';
-    const volumeField = isPreMarket ? 'preMarketVolume'     : 'regularMarketVolume';
+    const marketState   = quote.marketState || 'REGULAR';
+    const isPreMarket   = marketState.includes('PRE');
+    const currentPrice  = isPreMarket
+      ? (quote.preMarketPrice || quote.regularMarketPrice)
+      : quote.regularMarketPrice;
+    const currentVolume = quote.regularMarketVolume;
 
-    const price        = quote[priceField];
-    const volume       = quote[volumeField];
-    const floatShares  = quote.sharesOutstanding || 0;
-    const shortPercent = (quote.shortPercentFloat || 0) * 100;
+    // ─── 2) FUNDAMENTALS & SHORT % (v2 quoteSummary) ─────────────────────────
+    let fundamentals  = {};
+    let shortPercent  = 0;
+    let floatShares   = null;
+    let sharesOut     = null;
 
-    // 4) Fetch fundamentals
-    const summary = await yahooFinance.quoteSummary(symbol, {
-      modules: ['financialData']
-    });
-    const fd = summary.financialData || {};
-    const fundamentals = {
-      peRatio:         fd.trailingPE ?? null,
-      revenueGrowth:   fd.revenueGrowth?.raw != null ? fd.revenueGrowth.raw * 100 : null,
-      debtEquity:      fd.debtToEquity ?? null,
-      epsTrailingTwelveMonths: fd.epsTrailingTwelveMonths ?? null
+    try {
+      const summary = await yahooLimiter.schedule(() =>
+        yahooFinance.quoteSummary(symbol, {
+          modules: ['financialData', 'defaultKeyStatistics']
+        })
+      );
+
+      const fin = summary.financialData ?? {};
+      const stat = summary.defaultKeyStatistics ?? {};
+
+      fundamentals = {
+        peRatio:          fin.trailingPE                       ?? null,
+        revenueGrowth:    fin.revenueGrowth?.raw               ?? null,
+        debtEquity:       fin.debtToEquity                      ?? null,
+        eps:              fin.epsTrailingTwelveMonths          ?? null,
+        floatShares:      stat.floatShares                      ?? null,
+        sharesOutstanding: stat.sharesOutstanding                ?? null
+      };
+
+      shortPercent = stat.shortPercentFloat ?? 0;
+      floatShares  = stat.floatShares       ?? null;
+      sharesOut    = stat.sharesOutstanding ?? null;
+    } catch (err) {
+      console.warn(`[yahooIndicators] ${symbol} · quoteSummary failed:`, err.message);
+      fundamentals = {};
+      shortPercent = 0;
+      floatShares  = null;
+      sharesOut    = null;
+    }
+
+    // ─── 3) HISTORICAL DATA (v2 historical module) ───────────────────────────
+    const endDate   = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - lookbackDays);
+
+    let history      = [];
+    let usedInterval = 'none';
+
+    const getHistoricalData = async (interval) => {
+      try {
+        const result = await yahooLimiter.schedule(() =>
+          yahooFinance.historical(symbol, {
+            period1: startDate,
+            period2: endDate,
+            interval,
+            events: 'history',
+            includeAdjustedClose: false
+          })
+        );
+        if (!Array.isArray(result) || result.length === 0) {
+          return null;
+        }
+        // Map to uniform shape (we ignore adjClose if present)
+        return result.map(row => ({
+          date:   new Date(row.date),
+          open:   row.open   ?? null,
+          high:   row.high   ?? null,
+          low:    row.low    ?? null,
+          close:  row.close  ?? null,
+          volume: row.volume ?? null
+        })).filter(d => d.close !== null);
+      } catch (err) {
+        console.warn(`[yahooIndicators] ${symbol} · historical(${interval}) failed:`, err.message);
+        return null;
+      }
     };
 
-    // 5) Fetch 30 days of bars (incl. extended hours)
-    const period1 = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    const period2 = new Date();
-    const response = await yahooFinance.chart(symbol, {
-      period1,
-      period2,
-      interval: '1d',
-      includePrePost: true,
-      events: []
-    });
-
-    const chartData = response.chart?.result?.[0];
-    if (!chartData || !Array.isArray(chartData.timestamp)) {
-      throw new Error(`No valid chart data for ${symbol}`);
-    }
-    const { timestamp, indicators: { quote: [bars] = [] } } = chartData;
-    if (!bars || !Array.isArray(bars.close)) {
-      throw new Error(`Malformed indicator data for ${symbol}`);
+    for (const interval of ['1d', '1wk', '1mo']) {
+      const data = await getHistoricalData(interval);
+      if (data && data.length > 0) {
+        history      = data;
+        usedInterval = interval;
+        break;
+      }
     }
 
-    // 6) Build history of all bars
-    const history = timestamp.map((ts, i) => ({
-      date:   new Date(ts * 1000),
-      open:   bars.open?.[i]   ?? null,
-      high:   bars.high?.[i]   ?? null,
-      low:    bars.low?.[i]    ?? null,
-      close:  bars.close?.[i]  ?? null,
-      volume: bars.volume?.[i] ?? null,
-    })).filter(d => d.close != null);
-
-    // 7) Compute technicals on the full history
-    const closes      = history.map(d => d.close);
-    const rsi         = technicals.calculateRSI(closes, 14);
-    const momentum    = technicals.calculateMomentum(closes);
-    const volumeSpike = technicals.detectVolumeSpike(history);
-
-    // 8) Pre-market analysis (4:00–9:29)
-    const prevCloseBar   = history.find(d => d.date.getHours() === 16);
-    const prevClose      = prevCloseBar?.close;
-    const preMarketBars  = history.filter(d => d.date.getHours() < 9);
-    let preMarketChange  = null, preMarketVolSpike = null;
-    if (preMarketBars.length && prevClose) {
-      const lastPre      = preMarketBars[preMarketBars.length - 1];
-      preMarketChange   = ((lastPre.close - prevClose) / prevClose) * 100;
-      const avgPreVol    = preMarketBars.reduce((sum, b) => sum + b.volume, 0) / preMarketBars.length;
-      preMarketVolSpike = lastPre.volume / avgPreVol;
+    if (!history.length) {
+      console.warn(`[yahooIndicators] ${symbol} · No valid historical data`);
+      return null;
     }
 
-    // 9) Support & resistance from the last 5 full-day bars
-    const last5 = history.slice(-5);
-    const lows  = last5.map(d => d.low).filter(v => v != null);
-    const highs = last5.map(d => d.high).filter(v => v != null);
-    const support    = lows.length  ? Math.min(...lows)   : null;
-    const resistance = highs.length ? Math.max(...highs)  : null;
+    // ─── 4) TECHNICAL INDICATORS ──────────────────────────────────────────────
+    const technicalsData = {};
+    {
+      const closes  = history.map(d => d.close).filter(Number);
+      const volumes = history.map(d => d.volume).filter(Number);
 
+      technicalsData.rsi         =
+        closes.length >= 14
+          ? technicals.calculateRSI(closes, 14)
+          : null;
+      technicalsData.momentum    =
+        closes.length >= 2
+          ? technicals.calculateMomentum(closes)
+          : null;
+      technicalsData.volumeSpike =
+        volumes.length > 5
+          ? technicals.findVolumeSpikes(volumes, 1.5)
+          : null;
+
+      const regularSessions = history
+        .filter(d => new Date(d.date).getHours() === 16)
+        .slice(-5);
+
+      technicalsData.support    = regularSessions.length
+        ? Math.min(...regularSessions.map(d => d.low))
+        : null;
+      technicalsData.resistance = regularSessions.length
+        ? Math.max(...regularSessions.map(d => d.high))
+        : null;
+    }
+
+    // ─── 5) PRE-MARKET CALCULATION ────────────────────────────────────────────
+    const preMarketData =
+      isPreMarket && typeof quote.preMarketPrice === 'number'
+        ? {
+            price: quote.preMarketPrice,
+            changePercent:
+              typeof quote.preMarketChange === 'number'
+                ? quote.preMarketChange
+                : quote.regularMarketPreviousClose
+                  ? ((quote.preMarketPrice - quote.regularMarketPreviousClose) /
+                     quote.regularMarketPreviousClose) * 100
+                  : null
+          }
+        : null;
+
+    // ─── 6) FINAL RESULT ─────────────────────────────────────────────────────
     return {
       symbol,
-      // live session data
-      price,
-      volume,
-      floatPercent:       floatShares,
-      shortPercent,
-      // technicals
-      rsi,
-      momentum,
-      volumeSpike,
-      // price structure
-      support,
-      resistance,
-      fundamentals,
+      price:      currentPrice,
+      volume:     currentVolume,
+
+      fundamentals: {
+        peRatio:          fundamentals.peRatio          ?? null,
+        revenueGrowth:    fundamentals.revenueGrowth    ?? null,
+        debtEquity:       fundamentals.debtEquity       ?? null,
+        eps:              fundamentals.eps              ?? null,
+        floatShares:      floatShares,
+        sharesOutstanding: sharesOut,
+        shortPercent:     shortPercent
+      },
+
       history,
-      // pre-market stats
-      preMarketChange,
-      preMarketVolSpike
+      technicals: technicalsData,
+      preMarket:  preMarketData,
+
+      meta: {
+        intervalUsed: usedInterval,
+        dataPoints:   history.length,
+        marketState,
+        lastUpdated:  new Date()
+      }
     };
   } catch (err) {
-    throw new Error(`getYahooIndicators failed for ${symbol}: ${err.message}`);
+    console.error(`[yahooIndicators] ${symbol} · Critical error:`, err);
+    return null;
   }
 }
 

@@ -1,0 +1,62 @@
+[
+  {
+    "symbol": "AAPL",
+    "call": {
+      "type": "call",
+      "contractSymbol": "AAPL250606C00202500",
+      "strike": 202.5,
+      "expiry": "2025-06-06"
+    },
+    "put": {
+      "type": "put",
+      "contractSymbol": "AAPL250606P00202500",
+      "strike": 202.5,
+      "expiry": "2025-06-06"
+    }
+  },
+  {
+    "symbol": "TSLA",
+    "call": {
+      "type": "call",
+      "contractSymbol": "TSLA250606C00350000",
+      "strike": 350,
+      "expiry": "2025-06-06"
+    },
+    "put": {
+      "type": "put",
+      "contractSymbol": "TSLA250606P00350000",
+      "strike": 350,
+      "expiry": "2025-06-06"
+    }
+  },
+  {
+    "symbol": "MSFT",
+    "call": {
+      "type": "call",
+      "contractSymbol": "MSFT250606C00462500",
+      "strike": 462.5,
+      "expiry": "2025-06-06"
+    },
+    "put": {
+      "type": "put",
+      "contractSymbol": "MSFT250606P00462500",
+      "strike": 462.5,
+      "expiry": "2025-06-06"
+    }
+  },
+  {
+    "symbol": "GOOG",
+    "call": {
+      "type": "call",
+      "contractSymbol": "GOOG250606C00167500",
+      "strike": 167.5,
+      "expiry": "2025-06-06"
+    },
+    "put": {
+      "type": "put",
+      "contractSymbol": "GOOG250606P00167500",
+      "strike": 167.5,
+      "expiry": "2025-06-06"
+    }
+  }
+]

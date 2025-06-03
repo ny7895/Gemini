@@ -56,17 +56,19 @@
     }
   },
   "ASST": {
-    "ts": 1748555573986,
+    "ts": 1748892347360,
     "data": {
       "symbol": "ASST",
-      "price": 7.56,
-      "rsi": 70.69,
-      "momentum": -0.0136,
+      "price": 7.2699,
+      "rsi": 61.07,
+      "momentum": -0.0066,
       "volumeSpike": false,
-      "support": 0.5799999833106995,
+      "support": 0.6060000061988831,
       "resistance": 13.010000228881836,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.6877,
+      "newsCount": 1
     }
   },
   "BNRG": {
@@ -98,59 +100,67 @@
     }
   },
   "BTM": {
-    "ts": 1748659642973,
+    "ts": 1748918907801,
     "data": {
       "symbol": "BTM",
-      "price": 3.9,
-      "rsi": 84.93,
-      "momentum": -0.0132,
+      "price": 4.18,
+      "rsi": 85.5,
+      "momentum": 0.0567,
       "volumeSpike": false,
       "support": 1.3700000047683716,
-      "resistance": 3.9000000953674316,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 4.179999828338623,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.7132,
+      "newsCount": 0
     }
   },
   "CAPT": {
-    "ts": 1748659642973,
+    "ts": 1748918907802,
     "data": {
       "symbol": "CAPT",
-      "price": 1.09,
-      "rsi": 14.77,
-      "momentum": -0.002,
+      "price": 1.27,
+      "rsi": 90.24,
+      "momentum": -0.01,
       "volumeSpike": true,
       "support": 0.38999998569488525,
-      "resistance": 1.090000033378601,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 1.2699999809265137,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -2.5786,
+      "newsCount": 0
     }
   },
   "CEP": {
-    "ts": 1748555573986,
+    "ts": 1748918907802,
     "data": {
       "symbol": "CEP",
-      "price": 42.11,
-      "rsi": 53.02,
-      "momentum": -0.2229,
+      "price": 43.22,
+      "rsi": 57.14,
+      "momentum": 0.157,
       "volumeSpike": false,
       "support": 28.059999465942383,
-      "resistance": 50,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 49.95000076293945,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.4776,
+      "newsCount": 0
     }
   },
   "CISO": {
-    "ts": 1748555573986,
+    "ts": 1748919027412,
     "data": {
       "symbol": "CISO",
-      "price": 1.39,
-      "rsi": 77.42,
-      "momentum": 0.0931,
+      "price": 1.01,
+      "rsi": 55.97,
+      "momentum": -0.3097,
       "volumeSpike": false,
-      "support": 0.49399998784065247,
+      "support": 0.574999988079071,
       "resistance": 1.4199999570846558,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -2.0277,
+      "newsCount": 0
     }
   },
   "CLGN": {
@@ -210,17 +220,19 @@
     }
   },
   "ENTO": {
-    "ts": 1748659642973,
+    "ts": 1748892347360,
     "data": {
       "symbol": "ENTO",
-      "price": 0.4335,
-      "rsi": 59.17,
-      "momentum": -0.0247,
-      "volumeSpike": true,
+      "price": 0.4464,
+      "rsi": 66.73,
+      "momentum": -0.0056,
+      "volumeSpike": false,
       "support": 0.3529999852180481,
-      "resistance": 0.4339999854564667,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 0.4490000009536743,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -27482.5587,
+      "newsCount": 0
     }
   },
   "EYEN": {
@@ -238,17 +250,19 @@
     }
   },
   "FTRK": {
-    "ts": 1748659642973,
+    "ts": 1748892347360,
     "data": {
       "symbol": "FTRK",
-      "price": 4.85,
+      "price": 5,
       "rsi": null,
       "momentum": -0.1779,
-      "volumeSpike": true,
+      "volumeSpike": false,
       "support": 3.2799999713897705,
-      "resistance": 4.849999904632568,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 4.989999771118164,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": null,
+      "newsCount": 0
     }
   },
   "GAME": {
@@ -350,17 +364,19 @@
     }
   },
   "IMNN": {
-    "ts": 1748659642973,
+    "ts": 1748892347360,
     "data": {
       "symbol": "IMNN",
-      "price": 2.49,
-      "rsi": 9.26,
-      "momentum": 0,
+      "price": 2.5,
+      "rsi": 70.63,
+      "momentum": 0.0241,
       "volumeSpike": false,
       "support": 0.4000000059604645,
-      "resistance": 2.490000009536743,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 2.500699996948242,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -2.1575,
+      "newsCount": 1
     }
   },
   "INDP": {
@@ -392,31 +408,35 @@
     }
   },
   "INTS": {
-    "ts": 1748659642973,
+    "ts": 1748919027412,
     "data": {
       "symbol": "INTS",
-      "price": 0.4752,
-      "rsi": 20.51,
-      "momentum": -0.0244,
+      "price": 0.591,
+      "rsi": 58,
+      "momentum": 0.0196,
       "volumeSpike": true,
       "support": 0.3140000104904175,
-      "resistance": 0.5730000138282776,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 0.5910000205039978,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.1698,
+      "newsCount": 0
     }
   },
   "JFBR": {
-    "ts": 1748555573986,
+    "ts": 1748919146982,
     "data": {
       "symbol": "JFBR",
-      "price": 0.459,
-      "rsi": 44.43,
-      "momentum": -0.4295,
+      "price": 0.4331,
+      "rsi": 16.59,
+      "momentum": 0.2202,
       "volumeSpike": false,
       "support": 0.4050000011920929,
-      "resistance": 1.4900000095367432,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 1.3300000429153442,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -11.9123,
+      "newsCount": 0
     }
   },
   "MIMI": {
@@ -448,31 +468,35 @@
     }
   },
   "MODV": {
-    "ts": 1748555573986,
+    "ts": 1748919146982,
     "data": {
       "symbol": "MODV",
-      "price": 1.31,
-      "rsi": 34.55,
-      "momentum": 0.0588,
+      "price": 2.2,
+      "rsi": 70,
+      "momentum": -0.007,
       "volumeSpike": true,
       "support": 0.8899999856948853,
-      "resistance": 1.4600000381469727,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 2.200000047683716,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -14.1351,
+      "newsCount": 0
     }
   },
   "NAOV": {
-    "ts": 1748555573986,
+    "ts": 1748919146982,
     "data": {
       "symbol": "NAOV",
-      "price": 1.25,
-      "rsi": 28.75,
-      "momentum": 0.2972,
-      "volumeSpike": true,
+      "price": 1.13,
+      "rsi": 17.04,
+      "momentum": -0.0158,
+      "volumeSpike": false,
       "support": 0.8560000061988831,
       "resistance": 4.420000076293945,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -13.7298,
+      "newsCount": 0
     }
   },
   "NOTV": {
@@ -504,31 +528,35 @@
     }
   },
   "NVVE": {
-    "ts": 1748659642973,
+    "ts": 1748919146982,
     "data": {
       "symbol": "NVVE",
-      "price": 1.22,
-      "rsi": 50.04,
-      "momentum": -0.0961,
+      "price": 1.49,
+      "rsi": 56.57,
+      "momentum": 0.1129,
       "volumeSpike": false,
       "support": 0.902999997138977,
       "resistance": 2.7799999713897705,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -26.9175,
+      "newsCount": 0
     }
   },
   "ONCO": {
-    "ts": 1748555573986,
+    "ts": 1748919146983,
     "data": {
       "symbol": "ONCO",
       "price": 0.08,
-      "rsi": 53.16,
-      "momentum": 0.0411,
+      "rsi": 55.81,
+      "momentum": 0.0145,
       "volumeSpike": false,
       "support": 0.0689999982714653,
       "resistance": 0.09300000220537186,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -87.4508,
+      "newsCount": 0
     }
   },
   "OTLK": {
@@ -560,13 +588,13 @@
     }
   },
   "PLRZ": {
-    "ts": 1748555573986,
+    "ts": 1748883618101,
     "data": {
       "symbol": "PLRZ",
-      "price": 1.25,
-      "rsi": 42.79,
-      "momentum": -0.0097,
-      "volumeSpike": true,
+      "price": 0.9348,
+      "rsi": 0,
+      "momentum": 0.502,
+      "volumeSpike": false,
       "support": 0.6460000276565552,
       "resistance": 285,
       "floatPercent": null,
@@ -574,17 +602,19 @@
     }
   },
   "PSTV": {
-    "ts": 1748555573986,
+    "ts": 1748919146983,
     "data": {
       "symbol": "PSTV",
-      "price": 0.2864,
-      "rsi": 25.29,
-      "momentum": 0.0694,
-      "volumeSpike": false,
+      "price": 0.3677,
+      "rsi": 39.07,
+      "momentum": 0.24,
+      "volumeSpike": true,
       "support": 0.27000001072883606,
-      "resistance": 0.7699999809265137,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 0.699999988079071,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.9544,
+      "newsCount": 0
     }
   },
   "SBET": {
@@ -644,29 +674,53 @@
     }
   },
   "TNXP": {
-    "ts": 1748555573986,
+    "ts": 1748979755278,
     "data": {
       "symbol": "TNXP",
-      "price": 42.02,
-      "rsi": 80.96,
-      "momentum": -0.0339,
+      "price": 40.48,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        72.08,
+        80.2,
+        80.73,
+        83.62,
+        77.17,
+        72.54,
+        74.95
+      ],
+      "momentum": 0.0672,
       "volumeSpike": false,
-      "support": 17.399999618530273,
+      "support": 18.829999923706055,
       "resistance": 42.02000045776367,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -176.5978,
+      "newsCount": 0
     }
   },
   "TRUG": {
-    "ts": 1748555573986,
+    "ts": 1748880304623,
     "data": {
       "symbol": "TRUG",
-      "price": 0.2507,
-      "rsi": 32.74,
-      "momentum": 0.0326,
+      "price": 0.2425,
+      "rsi": 38.05,
+      "momentum": 0.0923,
       "volumeSpike": true,
       "support": 0.1979999989271164,
-      "resistance": 0.28999999165534973,
+      "resistance": 0.2840000092983246,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -714,15 +768,15 @@
     }
   },
   "WETO": {
-    "ts": 1748555573986,
+    "ts": 1748876936537,
     "data": {
       "symbol": "WETO",
-      "price": 3.31,
-      "rsi": 34.14,
-      "momentum": 0.0073,
+      "price": 3.19,
+      "rsi": 18.23,
+      "momentum": -0.0424,
       "volumeSpike": true,
       "support": 1.6699999570846558,
-      "resistance": 4.166999816894531,
+      "resistance": 4.010000228881836,
       "floatPercent": null,
       "shortPercent": null
     }
@@ -756,17 +810,19 @@
     }
   },
   "ZVSA": {
-    "ts": 1748555573986,
+    "ts": 1748919266630,
     "data": {
       "symbol": "ZVSA",
-      "price": 0.6589,
-      "rsi": 35.21,
-      "momentum": 0.0984,
+      "price": 0.6563,
+      "rsi": 55.71,
+      "momentum": 0.0926,
       "volumeSpike": false,
       "support": 0.5040000081062317,
       "resistance": 0.6850000023841858,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -8.4803,
+      "newsCount": 0
     }
   },
   "ADD": {
@@ -798,17 +854,19 @@
     }
   },
   "TLYS": {
-    "ts": 1748659642973,
+    "ts": 1748894779830,
     "data": {
       "symbol": "TLYS",
-      "price": 1.43,
-      "rsi": 25.87,
-      "momentum": 0,
+      "price": 1.46,
+      "rsi": 56.5,
+      "momentum": 0.1333,
       "volumeSpike": true,
       "support": 0.6899999976158142,
-      "resistance": 1.5,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 1.4600000381469727,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.5395,
+      "newsCount": 0
     }
   },
   "APDN": {
@@ -854,31 +912,33 @@
     }
   },
   "BMGL": {
-    "ts": 1748659642973,
+    "ts": 1748876936537,
     "data": {
       "symbol": "BMGL",
-      "price": 6.08,
-      "rsi": 29.01,
-      "momentum": -0.024,
+      "price": 6.16,
+      "rsi": 26.13,
+      "momentum": -0.1208,
       "volumeSpike": true,
       "support": 1.0199999809265137,
-      "resistance": 6.079999923706055,
+      "resistance": 6.320000171661377,
       "floatPercent": null,
       "shortPercent": null
     }
   },
   "BNAI": {
-    "ts": 1748659642973,
+    "ts": 1748918907801,
     "data": {
       "symbol": "BNAI",
-      "price": 0.279,
-      "rsi": 23.91,
-      "momentum": 0.0315,
+      "price": 0.49,
+      "rsi": 74.87,
+      "momentum": 0.1296,
       "volumeSpike": true,
       "support": 0.24699999392032623,
-      "resistance": 0.36000001430511475,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 0.49000000953674316,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.0245,
+      "newsCount": 0
     }
   },
   "BSLK": {
@@ -910,45 +970,51 @@
     }
   },
   "INHD": {
-    "ts": 1748659642973,
+    "ts": 1748919027412,
     "data": {
       "symbol": "INHD",
-      "price": 1.25,
-      "rsi": 18.3,
-      "momentum": -0.0739,
+      "price": 1.5,
+      "rsi": 19.07,
+      "momentum": 0.0485,
       "volumeSpike": false,
       "support": 1.1100000143051147,
-      "resistance": 7.170000076293945,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 6.815000057220459,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.5892,
+      "newsCount": 0
     }
   },
   "INOD": {
-    "ts": 1748659642973,
+    "ts": 1748919027412,
     "data": {
       "symbol": "INOD",
-      "price": 39.47,
-      "rsi": 41.13,
-      "momentum": -0.0156,
+      "price": 43.86,
+      "rsi": 59.54,
+      "momentum": 0.0044,
       "volumeSpike": true,
       "support": 34.619998931884766,
-      "resistance": 41.11000061035156,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 43.86000061035156,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.8907,
+      "newsCount": 1
     }
   },
   "RRGB": {
-    "ts": 1748659642973,
+    "ts": 1748919266630,
     "data": {
       "symbol": "RRGB",
-      "price": 5.1,
-      "rsi": 50,
-      "momentum": -0.0069,
+      "price": 5.88,
+      "rsi": 85.1,
+      "momentum": 0.0494,
       "volumeSpike": true,
       "support": 2.630000114440918,
-      "resistance": 5.099999904632568,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 5.880000114440918,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -4.9276,
+      "newsCount": 0
     }
   },
   "TIRX": {
@@ -966,17 +1032,41 @@
     }
   },
   "TSSI": {
-    "ts": 1748618846352,
+    "ts": 1748979755278,
     "data": {
       "symbol": "TSSI",
-      "price": 13.58,
-      "rsi": 66.55,
-      "momentum": -0.0916,
+      "price": 15.18,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        70.53,
+        68.74,
+        68.39,
+        65.8,
+        71.01,
+        71.05,
+        72.55
+      ],
+      "momentum": 0.047,
       "volumeSpike": false,
-      "support": 6.840000152587891,
+      "support": 6.869999885559082,
       "resistance": 15.4399995803833,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.2383,
+      "newsCount": 0
     }
   },
   "VVPR": {
@@ -1022,59 +1112,67 @@
     }
   },
   "CLBR": {
-    "ts": 1748659642973,
+    "ts": 1748918907801,
     "data": {
       "symbol": "CLBR",
-      "price": 15.39,
-      "rsi": 70.59,
-      "momentum": -0.025,
+      "price": 16.9,
+      "rsi": 87.64,
+      "momentum": -0.0106,
       "volumeSpike": true,
-      "support": 12.09000015258789,
-      "resistance": 15.390000343322754,
-      "floatPercent": null,
-      "shortPercent": null
+      "support": 12.140000343322754,
+      "resistance": 16.899999618530273,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.271,
+      "newsCount": 1
     }
   },
   "FMST": {
-    "ts": 1748659642973,
+    "ts": 1748919027412,
     "data": {
       "symbol": "FMST",
-      "price": 3.66,
-      "rsi": 74.53,
-      "momentum": 0.1209,
+      "price": 4.18,
+      "rsi": 79.9,
+      "momentum": 0.1212,
       "volumeSpike": false,
-      "support": 0.9100000262260437,
-      "resistance": 3.7699999809265137,
-      "floatPercent": null,
-      "shortPercent": null
+      "support": 0.9549999833106995,
+      "resistance": 4.179999828338623,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.9898,
+      "newsCount": 1
     }
   },
   "HKPD": {
-    "ts": 1748659642973,
+    "ts": 1748919027412,
     "data": {
       "symbol": "HKPD",
-      "price": 1.17,
-      "rsi": 41.84,
-      "momentum": 0.19,
-      "volumeSpike": false,
+      "price": 1.85,
+      "rsi": 75.73,
+      "momentum": 0.0444,
+      "volumeSpike": true,
       "support": 0.8799999952316284,
-      "resistance": 1.2899999618530273,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 1.850000023841858,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.1209,
+      "newsCount": 0
     }
   },
   "LFMD": {
-    "ts": 1748659642973,
+    "ts": 1748919146982,
     "data": {
       "symbol": "LFMD",
-      "price": 12.21,
-      "rsi": 91.11,
-      "momentum": 0.0262,
+      "price": 12.85,
+      "rsi": 96.04,
+      "momentum": -0.0284,
       "volumeSpike": false,
-      "support": 7.25,
-      "resistance": 12.210000038146973,
-      "floatPercent": null,
-      "shortPercent": null
+      "support": 7.539999961853027,
+      "resistance": 12.850000381469727,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.4583,
+      "newsCount": 0
     }
   },
   "RYET": {
@@ -1106,31 +1204,33 @@
     }
   },
   "ATXG": {
-    "ts": 1748659642973,
+    "ts": 1748880304623,
     "data": {
       "symbol": "ATXG",
-      "price": 0.9,
-      "rsi": 36.13,
-      "momentum": 0.0903,
+      "price": 0.933924,
+      "rsi": 31.97,
+      "momentum": 0.0205,
       "volumeSpike": true,
       "support": 0.5759999752044678,
-      "resistance": 0.8999999761581421,
+      "resistance": 0.933899998664856,
       "floatPercent": null,
       "shortPercent": null
     }
   },
   "BBNX": {
-    "ts": 1748659642973,
+    "ts": 1748918907801,
     "data": {
       "symbol": "BBNX",
-      "price": 17.24,
-      "rsi": 70.97,
-      "momentum": -0.0583,
+      "price": 18.69,
+      "rsi": 73.89,
+      "momentum": 0.0291,
       "volumeSpike": true,
-      "support": 11.140000343322754,
-      "resistance": 17.239999771118164,
-      "floatPercent": null,
-      "shortPercent": null
+      "support": 11.350000381469727,
+      "resistance": 18.690000534057617,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.2776,
+      "newsCount": 1
     }
   },
   "BKYI": {
@@ -1148,17 +1248,19 @@
     }
   },
   "MFI": {
-    "ts": 1748659642973,
+    "ts": 1748919146982,
     "data": {
       "symbol": "MFI",
-      "price": 0.861,
-      "rsi": 66.82,
-      "momentum": 0.0049,
+      "price": 1.17,
+      "rsi": 83.76,
+      "momentum": -0.0387,
       "volumeSpike": true,
       "support": 0.5960000157356262,
-      "resistance": 0.8610000014305115,
-      "floatPercent": null,
-      "shortPercent": null
+      "resistance": 1.1699999570846558,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.5385,
+      "newsCount": 1
     }
   },
   "MRKR": {
@@ -1176,17 +1278,41 @@
     }
   },
   "SYTA": {
-    "ts": 1748659642974,
+    "ts": 1748979755278,
     "data": {
       "symbol": "SYTA",
-      "price": 3.83,
-      "rsi": 67.63,
-      "momentum": 0.0541,
+      "price": 4.185,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        65.86,
+        62.56,
+        59.54,
+        56.29,
+        57.81,
+        58.4,
+        59.13
+      ],
+      "momentum": 0.0489,
       "volumeSpike": false,
       "support": 0.9800000190734863,
       "resistance": 8.1899995803833,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -154.6555,
+      "newsCount": 3
     }
   },
   "CETX": {
@@ -1257,6 +1383,1126 @@
       "resistance": 1.0399999618530273,
       "floatPercent": null,
       "shortPercent": null
+    }
+  },
+  "AGEN": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "AGEN",
+      "price": 4.13,
+      "rsi": 65.24,
+      "momentum": 0.0404,
+      "volumeSpike": true,
+      "support": 2.9100000858306885,
+      "resistance": 4.130000114440918,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -10.5813,
+      "newsCount": 0
+    }
+  },
+  "BLMZ": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "BLMZ",
+      "price": 0.1445,
+      "rsi": 43.97,
+      "momentum": -0.0474,
+      "volumeSpike": false,
+      "support": 0.0989999994635582,
+      "resistance": 0.20999999344348907,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -19.1942,
+      "newsCount": 0
+    }
+  },
+  "ENGS": {
+    "ts": 1748892347360,
+    "data": {
+      "symbol": "ENGS",
+      "price": 3.1425,
+      "rsi": 52.87,
+      "momentum": 0.1794,
+      "volumeSpike": false,
+      "support": 2.619999885559082,
+      "resistance": 3.1424999237060547,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.0778,
+      "newsCount": 0
+    }
+  },
+  "INM": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "INM",
+      "price": 3.42,
+      "rsi": 57.58,
+      "momentum": 0.0385,
+      "volumeSpike": true,
+      "support": 2.2799999713897705,
+      "resistance": 3.4200000762939453,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -20.1432,
+      "newsCount": 0
+    }
+  },
+  "KIDZ": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "KIDZ",
+      "price": 3.72,
+      "rsi": 38.9,
+      "momentum": -0.0292,
+      "volumeSpike": true,
+      "support": 2.569999933242798,
+      "resistance": 6.5,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.1796,
+      "newsCount": 1
+    }
+  },
+  "LYRA": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "LYRA",
+      "price": 20.25,
+      "rsi": 91.57,
+      "momentum": 0.0196,
+      "volumeSpike": true,
+      "support": 4.389999866485596,
+      "resistance": 20.25,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.4349,
+      "newsCount": 3
+    }
+  },
+  "NIVF": {
+    "ts": 1748889202257,
+    "data": {
+      "symbol": "NIVF",
+      "price": 2.0872,
+      "rsi": 29.38,
+      "momentum": -0.061,
+      "volumeSpike": true,
+      "support": 2.0199999809265137,
+      "resistance": 3.7699999809265137,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -25.4457,
+      "newsCount": 0
+    }
+  },
+  "PCSA": {
+    "ts": 1748883618101,
+    "data": {
+      "symbol": "PCSA",
+      "price": 0.5298,
+      "rsi": 47.95,
+      "momentum": -0.0575,
+      "volumeSpike": true,
+      "support": 0.2290000021457672,
+      "resistance": 0.5331000089645386,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "RITR": {
+    "ts": 1748919146983,
+    "data": {
+      "symbol": "RITR",
+      "price": 4.75,
+      "rsi": 72.6,
+      "momentum": 0.0058,
+      "volumeSpike": true,
+      "support": 3.359999895095825,
+      "resistance": 4.75,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.3162,
+      "newsCount": 1
+    }
+  },
+  "RVYL": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "RVYL",
+      "price": 0.5992,
+      "rsi": 27.41,
+      "momentum": 0.0667,
+      "volumeSpike": true,
+      "support": 0.5799999833106995,
+      "resistance": 0.9599999785423279,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -4.0072,
+      "newsCount": 0
+    }
+  },
+  "SGBX": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "SGBX",
+      "price": 1.26,
+      "rsi": 74.63,
+      "momentum": 0.0143,
+      "volumeSpike": false,
+      "support": 0.4000000059604645,
+      "resistance": 1.2599999904632568,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -7.907,
+      "newsCount": 1
+    }
+  },
+  "URGN": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "URGN",
+      "price": 4.84,
+      "rsi": 28.68,
+      "momentum": 0.13,
+      "volumeSpike": false,
+      "support": 3.930000066757202,
+      "resistance": 11.140000343322754,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -2.959,
+      "newsCount": 4
+    }
+  },
+  "DFDV": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "DFDV",
+      "price": 19.71,
+      "rsi": 55,
+      "momentum": -0.0117,
+      "volumeSpike": false,
+      "support": 8.058570861816406,
+      "resistance": 42.5,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.9546,
+      "newsCount": 4
+    }
+  },
+  "RAY": {
+    "ts": 1748919146983,
+    "data": {
+      "symbol": "RAY",
+      "price": 2.89,
+      "rsi": 70.76,
+      "momentum": 0.4949,
+      "volumeSpike": false,
+      "support": 0.9900000095367432,
+      "resistance": 2.9200000762939453,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.621,
+      "newsCount": 0
+    }
+  },
+  "TNFA": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "TNFA",
+      "price": 0.171,
+      "rsi": 45.18,
+      "momentum": -0.0251,
+      "volumeSpike": false,
+      "support": 0.15399999916553497,
+      "resistance": 0.22100000083446503,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -9.5853,
+      "newsCount": 0
+    }
+  },
+  "DUO": {
+    "ts": 1748880304623,
+    "data": {
+      "symbol": "DUO",
+      "price": 0.2046,
+      "rsi": 44.87,
+      "momentum": 0.026,
+      "volumeSpike": false,
+      "support": 0.20200000703334808,
+      "resistance": 0.25,
+      "floatPercent": null,
+      "shortPercent": null
+    }
+  },
+  "GRPN": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "GRPN",
+      "price": 32.38,
+      "rsi": 90.15,
+      "momentum": -0.0083,
+      "volumeSpike": false,
+      "support": 16.780000686645508,
+      "resistance": 32.380001068115234,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.5069,
+      "newsCount": 0
+    }
+  },
+  "OPFI": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "OPFI",
+      "price": 13.2,
+      "rsi": 69.4,
+      "momentum": 0.0165,
+      "volumeSpike": false,
+      "support": 9.699999809265137,
+      "resistance": 13.210000038146973,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.3603,
+      "newsCount": 0
+    }
+  },
+  "CDT": {
+    "ts": 1748918907802,
+    "data": {
+      "symbol": "CDT",
+      "price": 3.94,
+      "rsi": 24.18,
+      "momentum": 0.0546,
+      "volumeSpike": true,
+      "support": 3.25,
+      "resistance": 7.53000020980835,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -307.9398,
+      "newsCount": 0
+    }
+  },
+  "FGI": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "FGI",
+      "price": 0.73,
+      "rsi": 64.68,
+      "momentum": 0.0431,
+      "volumeSpike": true,
+      "support": 0.5099999904632568,
+      "resistance": 0.7699999809265137,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.1256,
+      "newsCount": 0
+    }
+  },
+  "CAPR": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "CAPR",
+      "price": 10.21,
+      "rsi": 49.54,
+      "momentum": 0.411,
+      "volumeSpike": false,
+      "support": 6.340000152587891,
+      "resistance": 11.119999885559082,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.149,
+      "newsCount": 0
+    }
+  },
+  "CERO": {
+    "ts": 1748894779830,
+    "data": {
+      "symbol": "CERO",
+      "price": 0.4467,
+      "rsi": 18.81,
+      "momentum": 0.0763,
+      "volumeSpike": true,
+      "support": 0.4449999928474426,
+      "resistance": 0.7900000214576721,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.3885,
+      "newsCount": 0
+    }
+  },
+  "ELPW": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "ELPW",
+      "price": 1.16,
+      "rsi": 38.77,
+      "momentum": -0.0406,
+      "volumeSpike": false,
+      "support": 1.100000023841858,
+      "resistance": 6.949999809265137,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.1488,
+      "newsCount": 0
+    }
+  },
+  "NCNA": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "NCNA",
+      "price": 0.038,
+      "rsi": 2.63,
+      "momentum": 1.7228,
+      "volumeSpike": false,
+      "support": 0.032999999821186066,
+      "resistance": 1.100000023841858,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.2561,
+      "newsCount": 1
+    }
+  },
+  "TIL": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "TIL",
+      "price": 29.65,
+      "rsi": 71.22,
+      "momentum": 0.1063,
+      "volumeSpike": true,
+      "support": 12.359999656677246,
+      "resistance": 30.350000381469727,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -23.9989,
+      "newsCount": 1
+    }
+  },
+  "DOMO": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "DOMO",
+      "price": 13.21,
+      "rsi": 86.85,
+      "momentum": 0.0266,
+      "volumeSpike": true,
+      "support": 7.519999980926514,
+      "resistance": 13.210000038146973,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -2.1281,
+      "newsCount": 2
+    }
+  },
+  "BDRX": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "BDRX",
+      "price": 1.15,
+      "rsi": 39.28,
+      "momentum": 0.0602,
+      "volumeSpike": false,
+      "support": 1.0499999523162842,
+      "resistance": 1.409999966621399,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.0012,
+      "newsCount": 0
+    }
+  },
+  "IQST": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "IQST",
+      "price": 13.3,
+      "rsi": 69,
+      "momentum": -0.0947,
+      "volumeSpike": true,
+      "support": 6.449999809265137,
+      "resistance": 13.300000190734863,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.0329,
+      "newsCount": 0
+    }
+  },
+  "NNE": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "NNE",
+      "price": 30.93,
+      "rsi": 61.63,
+      "momentum": -0.0701,
+      "volumeSpike": false,
+      "support": 23.360000610351562,
+      "resistance": 35.86000061035156,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.3871,
+      "newsCount": 1
+    }
+  },
+  "PMAX": {
+    "ts": 1748919146983,
+    "data": {
+      "symbol": "PMAX",
+      "price": 0.44,
+      "rsi": 52.16,
+      "momentum": -0.0121,
+      "volumeSpike": false,
+      "support": 0.31200000643730164,
+      "resistance": 0.5099999904632568,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.3846,
+      "newsCount": 0
+    }
+  },
+  "SONM": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "SONM",
+      "price": 0.952,
+      "rsi": 30.2,
+      "momentum": -0.0207,
+      "volumeSpike": true,
+      "support": 0.9100000262260437,
+      "resistance": 1.4900000095367432,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -7.1316,
+      "newsCount": 1
+    }
+  },
+  "SOWG": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "SOWG",
+      "price": 0.9976,
+      "rsi": 67.82,
+      "momentum": 0.0161,
+      "volumeSpike": true,
+      "support": 0.6100000143051147,
+      "resistance": 1,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.4007,
+      "newsCount": 0
+    }
+  },
+  "TWG": {
+    "ts": 1748975327866,
+    "data": {
+      "symbol": "TWG",
+      "price": 0.1471,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        51.76,
+        48.68,
+        46.88,
+        46.26,
+        44.99,
+        50.16,
+        52.88
+      ],
+      "momentum": 0.028,
+      "volumeSpike": false,
+      "support": 0.13600000739097595,
+      "resistance": 0.17599999904632568,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.0841,
+      "newsCount": 0
+    }
+  },
+  "ZENA": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "ZENA",
+      "price": 2.89,
+      "rsi": 74.88,
+      "momentum": -0.0049,
+      "volumeSpike": false,
+      "support": 2.0399999618530273,
+      "resistance": 2.890000104904175,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.2432,
+      "newsCount": 0
+    }
+  },
+  "ALMU": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "ALMU",
+      "price": 16.43,
+      "rsi": 80.31,
+      "momentum": -0.0424,
+      "volumeSpike": true,
+      "support": 11.079999923706055,
+      "resistance": 16.43000030517578,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.371,
+      "newsCount": 0
+    }
+  },
+  "CLRO": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "CLRO",
+      "price": 0.368,
+      "rsi": 30.95,
+      "momentum": 0,
+      "volumeSpike": true,
+      "support": 0.33000001311302185,
+      "resistance": 0.5799999833106995,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.3744,
+      "newsCount": 1
+    }
+  },
+  "AMPY": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "AMPY",
+      "price": 3.16,
+      "rsi": 70.21,
+      "momentum": -0.0226,
+      "volumeSpike": true,
+      "support": 2.5999999046325684,
+      "resistance": 3.2100000381469727,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.3265,
+      "newsCount": 0
+    }
+  },
+  "PDSB": {
+    "ts": 1748892347360,
+    "data": {
+      "symbol": "PDSB",
+      "price": 1.438,
+      "rsi": 55.35,
+      "momentum": 0.1008,
+      "volumeSpike": false,
+      "support": 1.159999966621399,
+      "resistance": 1.6299999952316284,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.0318,
+      "newsCount": 1
+    }
+  },
+  "SAVA": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "SAVA",
+      "price": 2.13,
+      "rsi": 68.82,
+      "momentum": 0.0596,
+      "volumeSpike": false,
+      "support": 1.5099999904632568,
+      "resistance": 2.240000009536743,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.5254,
+      "newsCount": 0
+    }
+  },
+  "XTIA": {
+    "ts": 1748977536739,
+    "data": {
+      "symbol": "XTIA",
+      "price": 1.9265,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        73.39,
+        77.22,
+        73.86,
+        65.28,
+        58.49,
+        64.33,
+        65.87
+      ],
+      "momentum": 0.0302,
+      "volumeSpike": false,
+      "support": 1.2699999809265137,
+      "resistance": 2,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -21.1291,
+      "newsCount": 1
+    }
+  },
+  "DNA": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "DNA",
+      "price": 7.13,
+      "rsi": 51.69,
+      "momentum": 0.0729,
+      "volumeSpike": false,
+      "support": 6.449999809265137,
+      "resistance": 8.3100004196167,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -10.5411,
+      "newsCount": 1
+    }
+  },
+  "PSQH": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "PSQH",
+      "price": 2.29,
+      "rsi": 59.1,
+      "momentum": 0.0173,
+      "volumeSpike": false,
+      "support": 1.7300000190734863,
+      "resistance": 2.75,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.8016,
+      "newsCount": 1
+    }
+  },
+  "BSGM": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "BSGM",
+      "price": 7.02,
+      "rsi": 81.38,
+      "momentum": 0.014,
+      "volumeSpike": false,
+      "support": 1.4299999475479126,
+      "resistance": 7.019999980926514,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.7143,
+      "newsCount": 0
+    }
+  },
+  "DGXX": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "DGXX",
+      "price": 1.36,
+      "rsi": 50.12,
+      "momentum": -0.036,
+      "volumeSpike": false,
+      "support": 1.2699999809265137,
+      "resistance": 1.6799999475479126,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.7659,
+      "newsCount": 1
+    }
+  },
+  "ETOR": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "ETOR",
+      "price": 61.24,
+      "rsi": null,
+      "momentum": -0.2239,
+      "volumeSpike": false,
+      "support": 52,
+      "resistance": 67,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 2.3485,
+      "newsCount": 0
+    }
+  },
+  "FLYE": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "FLYE",
+      "price": 0.57,
+      "rsi": 70.53,
+      "momentum": 0.005,
+      "volumeSpike": true,
+      "support": 0.39899998903274536,
+      "resistance": 0.5699999928474426,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.0771,
+      "newsCount": 1
+    }
+  },
+  "INTZ": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "INTZ",
+      "price": 1.68,
+      "rsi": 59.19,
+      "momentum": 0.0286,
+      "volumeSpike": true,
+      "support": 1.2799999713897705,
+      "resistance": 1.7400000095367432,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -1.4768,
+      "newsCount": 0
+    }
+  },
+  "KALV": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "KALV",
+      "price": 12.92,
+      "rsi": 53.05,
+      "momentum": 0.0488,
+      "volumeSpike": true,
+      "support": 11.220000267028809,
+      "resistance": 13.100000381469727,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -3.4427,
+      "newsCount": 1
+    }
+  },
+  "MBOT": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "MBOT",
+      "price": 2.67,
+      "rsi": 54.48,
+      "momentum": 0.0246,
+      "volumeSpike": false,
+      "support": 2.380000114440918,
+      "resistance": 2.8299999237060547,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.7314,
+      "newsCount": 0
+    }
+  },
+  "ODD": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "ODD",
+      "price": 76.52,
+      "rsi": 69.6,
+      "momentum": -0.0235,
+      "volumeSpike": false,
+      "support": 60.15999984741211,
+      "resistance": 76.5199966430664,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 1.643,
+      "newsCount": 0
+    }
+  },
+  "OFAL": {
+    "ts": 1748919146983,
+    "data": {
+      "symbol": "OFAL",
+      "price": 5.26,
+      "rsi": null,
+      "momentum": -0.0238,
+      "volumeSpike": false,
+      "support": 4.679999828338623,
+      "resistance": 5.260000228881836,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": null,
+      "newsCount": 0
+    }
+  },
+  "SPWH": {
+    "ts": 1748919266630,
+    "data": {
+      "symbol": "SPWH",
+      "price": 2.05,
+      "rsi": 64,
+      "momentum": 0.006,
+      "volumeSpike": true,
+      "support": 1.6799999475479126,
+      "resistance": 2.119999885559082,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.8744,
+      "newsCount": 1
+    }
+  },
+  "VTLE": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "VTLE",
+      "price": 15.28,
+      "rsi": 58.63,
+      "momentum": -0.0289,
+      "volumeSpike": false,
+      "support": 13.460000038146973,
+      "resistance": 18.239999771118164,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -4.7249,
+      "newsCount": 1
+    }
+  },
+  "CASK": {
+    "ts": 1748918907802,
+    "data": {
+      "symbol": "CASK",
+      "price": 0.7,
+      "rsi": 68.03,
+      "momentum": -0.0669,
+      "volumeSpike": true,
+      "support": 0.44600000977516174,
+      "resistance": 0.699999988079071,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.1004,
+      "newsCount": 0
+    }
+  },
+  "CLIK": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "CLIK",
+      "price": 0.505,
+      "rsi": 59.52,
+      "momentum": 0.0156,
+      "volumeSpike": false,
+      "support": 0.23999999463558197,
+      "resistance": 0.7099999785423279,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.0362,
+      "newsCount": 1
+    }
+  },
+  "CLNN": {
+    "ts": 1748919027412,
+    "data": {
+      "symbol": "CLNN",
+      "price": 4.9,
+      "rsi": 82.6,
+      "momentum": 0.0211,
+      "volumeSpike": true,
+      "support": 2.369999885559082,
+      "resistance": 4.900000095367432,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -5.6657,
+      "newsCount": 0
+    }
+  },
+  "KITT": {
+    "ts": 1748919146982,
+    "data": {
+      "symbol": "KITT",
+      "price": 0.94,
+      "rsi": 46.38,
+      "momentum": 0.0917,
+      "volumeSpike": false,
+      "support": 0.9160000085830688,
+      "resistance": 1.090000033378601,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -36.7273,
+      "newsCount": 0
+    }
+  },
+  "PAY": {
+    "ts": 1748918907801,
+    "data": {
+      "symbol": "PAY",
+      "price": 39.72,
+      "rsi": 73.93,
+      "momentum": -0.0271,
+      "volumeSpike": false,
+      "support": 34.130001068115234,
+      "resistance": 39.84000015258789,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": 0.3458,
+      "newsCount": 1
+    }
+  },
+  "WLGS": {
+    "ts": 1748979755278,
+    "data": {
+      "symbol": "WLGS",
+      "price": 0.2198,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        60.4,
+        60.95,
+        56.28,
+        55.24,
+        53.75,
+        52.87,
+        55.38
+      ],
+      "momentum": 0.0618,
+      "volumeSpike": false,
+      "support": 0.1599999964237213,
+      "resistance": 0.31700000166893005,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.0217,
+      "newsCount": 0
+    }
+  },
+  "TRAW": {
+    "ts": 1748979755278,
+    "data": {
+      "symbol": "TRAW",
+      "price": 1.94,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        40.95,
+        45.94,
+        43.73,
+        45.97,
+        47.65,
+        47.65,
+        67.35
+      ],
+      "momentum": 0.3526,
+      "volumeSpike": true,
+      "support": 1.100000023841858,
+      "resistance": 1.920699954032898,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -107.2481,
+      "newsCount": 1
+    }
+  },
+  "TSBX": {
+    "ts": 1748979755278,
+    "data": {
+      "symbol": "TSBX",
+      "price": 0.3298,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        39.2,
+        38.87,
+        45.4,
+        38,
+        40.38,
+        35.92,
+        43.52
+      ],
+      "momentum": 0.0543,
+      "volumeSpike": true,
+      "support": 0.31299999356269836,
+      "resistance": 0.36000001430511475,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -3.0749,
+      "newsCount": 0
+    }
+  },
+  "LTRY": {
+    "ts": 1748979755278,
+    "data": {
+      "symbol": "LTRY",
+      "price": 1.53,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        75.99,
+        77.71,
+        70.87,
+        71.23,
+        60.64,
+        58.13,
+        60.64
+      ],
+      "momentum": 0.0706,
+      "volumeSpike": false,
+      "support": 0.7250000238418579,
+      "resistance": 1.8799999952316284,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -3.3238,
+      "newsCount": 3
     }
   }
 }

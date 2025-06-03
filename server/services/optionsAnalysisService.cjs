@@ -1,153 +1,361 @@
+// server/services/optionsAnalysisService.cjs
 
-const { fetchOptionChain } = require('./optionsService.cjs')
-const { analyzeWithGPT }   = require('./gptAnalysis.cjs')
+const { suggestCall, suggestPut, getContractsInRange } = require('./optionsService.cjs');
+const { OpenAI } = require('openai');
+const log = require('../utils/logger.cjs');
+require('dotenv').config();
 
-// Helper: pause for ms milliseconds
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-/**
- * Analyze both call and put suggestions with GPT, including entry and exit plans.
- *
- * @param {Object} params
- * @param {string} params.symbol      - Stock ticker, e.g. 'AAPL'
- * @param {Object} params.metrics     - Underlying metrics ({ price, rsi, momentum, support, resistance, ... })
- * @param {boolean} params.isDayTrade - True if this is a day-trade candidate
- * @returns {Promise<Object>}         - {
- *   callPick, callAction, callRationale, callExitPlan,
- *   putPick, putAction, putRationale, putExitPlan
- * }
- */
 async function analyzeOptionsWithGPT({ symbol, metrics, isDayTrade }) {
-  // 1) Throttle: wait 12 seconds before fetching to stay under 5 calls/min
-  await sleep(12000)
+  // 1) Throttle
+  await sleep(1000);
 
-  // 2) Fetch the entire option chain once from Polygon
-  let chain = []
+  // 2) Grab the entire option chains (all expirations up to two months out)
+  let fullChains;
   try {
-    chain = await fetchOptionChain(symbol)
+    fullChains = await getContractsInRange(symbol);
   } catch (err) {
-    console.error(`❌ Polygon chain fetch failed for ${symbol}:`, err.message)
-    throw err
+    log.error(`❌ getContractsInRange failed for ${symbol}: ${err.message}`);
+    // fall back to just ATM picks if chain fetch fails
+    fullChains = null;
   }
 
-  // 3) Pick an expiration date
-  const expirations = Array.from(new Set(chain.map(o => o.expiration_date)))
-  expirations.sort()
-  let expiry
-  if (isDayTrade) {
-    expiry = expirations.find(d => new Date(d).getUTCDay() === 5) || expirations[0]
+  // 3) If fullChains is null, pick a single ATM call/put
+  let callPick = null,
+      putPick = null;
+
+  if (!fullChains) {
+    try {
+      callPick = await suggestCall(symbol, isDayTrade, metrics.price);
+    } catch (err) {
+      log.error(`❌ suggestCall failed for ${symbol}: ${err.message}`);
+      callPick = null;
+    }
+    try {
+      putPick = await suggestPut(symbol, isDayTrade, metrics.price);
+    } catch (err) {
+      log.error(`❌ suggestPut failed for ${symbol}: ${err.message}`);
+      putPick = null;
+    }
   } else {
-    const target = Date.now() + 30 * 24 * 60 * 60 * 1000
-    expiry = expirations.reduce((p, c) =>
-      Math.abs(new Date(c) - target) < Math.abs(new Date(p) - target) ? c : p
-    )
+    // 4) If we do have fullChains, pick ATM from the nearest expiry
+    const nearest = fullChains[0];
+    callPick = pickATMFromList(nearest.calls, metrics.price);
+    putPick  = pickATMFromList(nearest.puts, metrics.price);
   }
 
-  // Helper to pick by delta
-  const pickByDelta = (options, target = 0.35) => {
-    return options.reduce((best, opt) => {
-      const d1 = Math.abs(opt.greeks.delta - target)
-      const d2 = Math.abs(best.greeks.delta - target)
-      return d1 < d2 ? opt : best
-    })
-  }
+  // 5) Build the GPT prompt, injecting all rawChains if available
+  let callPrompt = null,
+      putPrompt = null;
 
-  // 4) Filter calls for that expiry
-  const calls = chain.filter(o =>
-    o.expiration_date === expiry &&
-    o.contract_type   === 'call' &&
-    o.greeks &&
-    o.greeks.delta != null
-  )
-  if (!calls.length) {
-    throw new Error(`no call contracts for ${symbol} at ${expiry}`)
-  }
-  const callPickRaw = pickByDelta(calls, 0.35)
-  const callPremium = callPickRaw.last_quote?.askPrice ?? callPickRaw.last_trade?.price
-  const callPick = {
-    type:    'call',
-    strike:  callPickRaw.strike_price,
-    expiry:  callPickRaw.expiration_date,
-    premium: callPremium,
-    delta:   callPickRaw.greeks.delta
-  }
+  if (fullChains) {
+    // Build a JSON blob of every expiry + calls + puts,
+    // but trim to just the fields GPT needs
+    const simplifiedChains = fullChains.map((entry) => ({
+      expiry: entry.expiry,
+      calls: entry.calls.map((c) => ({
+        contractSymbol:    c.contractSymbol,
+        strike:            c.strike,
+        bid:               c.bid,
+        ask:               c.ask,
+        impliedVolatility: c.impliedVolatility,
+        openInterest:      c.openInterest
+      })),
+      puts: entry.puts.map((p) => ({
+        contractSymbol:    p.contractSymbol,
+        strike:            p.strike,
+        bid:               p.bid,
+        ask:               p.ask,
+        impliedVolatility: p.impliedVolatility,
+        openInterest:      p.openInterest
+      }))
+    }));
 
-  // 5) Filter puts for that expiry
-  const puts = chain.filter(o =>
-    o.expiration_date === expiry &&
-    o.contract_type   === 'put' &&
-    o.greeks &&
-    o.greeks.delta != null
-  )
-  if (!puts.length) {
-    throw new Error(`no put contracts for ${symbol} at ${expiry}`)
-  }
-  const putPickRaw = pickByDelta(puts, -0.35)
-  const putPremium = putPickRaw.last_quote?.askPrice ?? putPickRaw.last_trade?.price
-  const putPick = {
-    type:    'put',
-    strike:  putPickRaw.strike_price,
-    expiry:  putPickRaw.expiration_date,
-    premium: putPremium,
-    delta:   Math.abs(putPickRaw.greeks.delta)
-  }
+    callPrompt = `
+You are an options strategist. Below is a **complete chain** of call and put contracts 
+for ${symbol}, from the nearest expiration up through ~2 months out.
 
-  // 6) Build a GPT prompt for the call, asking entry and exit
-  const callPrompt = `
-You are an options strategist.
-Stock: ${symbol}
-Underlying metrics: price=${metrics.price}, RSI=${metrics.rsi}, momentum=${metrics.momentum}, support=${metrics.support}, resistance=${metrics.resistance}.
+UNDERLYING METRICS:
+  • Price:           ${metrics.price}
+  • RSI:             ${metrics.rsi}
+  • Momentum:        ${metrics.momentum}
+  • Support:         ${metrics.support}
+  • Resistance:      ${metrics.resistance}
+  • Float %:         ${metrics.floatPercent}
+  • Short Float %:   ${metrics.shortFloat}
+  • Volume Spike:    ${metrics.volumeSpike ? 'Yes' : 'No'}
+  • Pre-Market %Chg: ${metrics.preMarketChange}
+  • Pre-Market Spike:${metrics.preMarketVolSpike ? 'Yes' : 'No'}
 
-Call pick: strike=${callPick.strike}, expiry=${callPick.expiry}, premium=${callPick.premium}, delta=${callPick.delta}.
+FULL OPTION CHAINS (calls + puts):
+\`\`\`json
+${JSON.stringify(simplifiedChains, null, 2)}
+\`\`\`
 
-1) Should we BUY this CALL option? If yes, explain why and when to enter. If not, explain why not.
-2) When should we EXIT this CALL? Provide clear exit criteria (e.g. profit target, stop-loss, time-based exit).
+Given all of the above data, answer:
+1) Which CALL contract should we BUY (if any)?  Provide:
+   • contractSymbol
+   • strike
+   • expiry
+   • bid, ask, impliedVolatility, openInterest
+   • Your rationale for choosing it, and suggested entry price.
+2) How and when should we EXIT that CALL?  Provide clear exit criteria
+   (profit target, stop-loss, or time-based exit).
 
 Respond with JSON:
 {
-  "action": "...",
+  "contractSymbol": "...",
+  "strike": ...,
+  "expiry": "...",
+  "bid": ...,
+  "ask": ...,
+  "impliedVolatility": ...,
+  "openInterest": ...,
   "rationale": "...",
+  "entryPrice": "...",
   "exitPlan": "..."
 }
-`.trim()
+    `.trim();
 
-  const callAnalysis = await analyzeWithGPT({ prompt: callPrompt })
+    putPrompt = `
+You are an options strategist. Below is a **complete chain** of call and put contracts 
+for ${symbol}, from the nearest expiration up through ~2 months out.
 
-  // 7) Build a GPT prompt for the put, asking entry and exit
-  const putPrompt = `
-You are an options strategist.
-Stock: ${symbol}
-Underlying metrics: price=${metrics.price}, RSI=${metrics.rsi}, momentum=${metrics.momentum}, support=${metrics.support}, resistance=${metrics.resistance}.
+UNDERLYING METRICS:
+  • Price:           ${metrics.price}
+  • RSI:             ${metrics.rsi}
+  • Momentum:        ${metrics.momentum}
+  • Support:         ${metrics.support}
+  • Resistance:      ${metrics.resistance}
+  • Float %:         ${metrics.floatPercent}
+  • Short Float %:   ${metrics.shortFloat}
+  • Volume Spike:    ${metrics.volumeSpike ? 'Yes' : 'No'}
+  • Pre-Market %Chg: ${metrics.preMarketChange}
+  • Pre-Market Spike:${metrics.preMarketVolSpike ? 'Yes' : 'No'}
 
-Put pick: strike=${putPick.strike}, expiry=${putPick.expiry}, premium=${putPick.premium}, delta=${putPick.delta}.
+FULL OPTION CHAINS (calls + puts):
+\`\`\`json
+${JSON.stringify(simplifiedChains, null, 2)}
+\`\`\`
 
-1) Should we BUY this PUT option? If yes, explain why and when to enter. If not, explain why not.
-2) When should we EXIT this PUT? Provide clear exit criteria (e.g. profit target, stop-loss, time-based exit).
+Given all of the above data, answer:
+1) Which PUT contract should we BUY (if any)?  Provide:
+   • contractSymbol
+   • strike
+   • expiry
+   • bid, ask, impliedVolatility, openInterest
+   • Your rationale for choosing it, and suggested entry price.
+2) How and when should we EXIT that PUT?  Provide clear exit criteria
+   (profit target, stop-loss, or time-based exit).
 
 Respond with JSON:
 {
-  "action": "...",
+  "contractSymbol": "...",
+  "strike": ...,
+  "expiry": "...",
+  "bid": ...,
+  "ask": ...,
+  "impliedVolatility": ...,
+  "openInterest": ...,
   "rationale": "...",
+  "entryPrice": "...",
   "exitPlan": "..."
 }
-`.trim()
+    `.trim();
+  } else {
+    // ─── Fallback to single‐ATM prompts if chains weren’t available ───────────
+    if (callPick) {
+      callPrompt = `
+You are an options strategist.
+Stock: ${symbol}
 
-  const putAnalysis = await analyzeWithGPT({ prompt: putPrompt })
+Underlying metrics:
+  • Price:           ${metrics.price}
+  • RSI:             ${metrics.rsi}
+  • Momentum:        ${metrics.momentum}
+  • Support:         ${metrics.support}
+  • Resistance:      ${metrics.resistance}
+  • Float %:         ${metrics.floatPercent}
+  • Short Float %:   ${metrics.shortFloat}
+  • Volume Spike:    ${metrics.volumeSpike ? 'Yes' : 'No'}
+  • Pre-Market %Chg: ${metrics.preMarketChange}
+  • Pre-Market Spike:${metrics.preMarketVolSpike ? 'Yes' : 'No'}
 
-  // 8) Return both raw picks and GPT analysis
+Single ATM CALL contract we can buy:
+  • contractSymbol: "${callPick.contractSymbol}"
+  • strike:         ${callPick.strike}
+  • expiry:         "${callPick.expiry}"
+
+Return JSON with EXACTLY these six fields:
+{
+  "contractSymbol": string | null,
+  "strike":        number | null,
+  "expiry":        string | null,
+  "action":       "Buy"|"Hold"|"Sell",
+  "rationale":     string,
+  "exitPlan":      string
+}
+
+If you do not want to buy this CALL, set contractSymbol, strike, expiry to null,
+and still provide "action":"Hold" (or "action":"Sell") with rationale and exitPlan.
+      `.trim();
+    }
+
+    if (putPick) {
+      putPrompt = `
+You are an options strategist.
+Stock: ${symbol}
+
+Underlying metrics:
+  • Price:           ${metrics.price}
+  • RSI:             ${metrics.rsi}
+  • Momentum:        ${metrics.momentum}
+  • Support:         ${metrics.support}
+  • Resistance:      ${metrics.resistance}
+  • Float %:         ${metrics.floatPercent}
+  • Short Float %:   ${metrics.shortFloat}
+  • Volume Spike:    ${metrics.volumeSpike ? 'Yes' : 'No'}
+  • Pre-Market %Chg: ${metrics.preMarketChange}
+  • Pre-Market Spike:${metrics.preMarketVolSpike ? 'Yes' : 'No'}
+
+Single ATM PUT contract we can buy:
+  • contractSymbol: "${putPick.contractSymbol}"
+  • strike:         ${putPick.strike}
+  • expiry:         "${putPick.expiry}"
+
+Return JSON with EXACTLY these six fields:
+{
+  "contractSymbol": string | null,
+  "strike":        number | null,
+  "expiry":        string | null,
+  "action":       "Buy"|"Hold"|"Sell",
+  "rationale":     string,
+  "exitPlan":      string
+}
+
+If you do not want to buy this PUT, set contractSymbol, strike, expiry to null,
+and still provide "action":"Hold" (or "action":"Sell") with rationale and exitPlan.
+      `.trim();
+    }
+
+    // If no option data at all, leave prompts null
+    if (!callPick) callPrompt = null;
+    if (!putPick)  putPrompt = null;
+  }
+
+  // 6) Send both prompts to GPT (only if they exist)
+  let callAnalysis = {
+      contractSymbol:    null,
+      strike:            null,
+      expiry:            null,
+      bid:               null,
+      ask:               null,
+      impliedVolatility: null,
+      openInterest:      null,
+      rationale:         'No option data available.',
+      entryPrice:        null,
+      exitPlan:          'N/A',
+    },
+    putAnalysis = {
+      contractSymbol:    null,
+      strike:            null,
+      expiry:            null,
+      bid:               null,
+      ask:               null,
+      impliedVolatility: null,
+      openInterest:      null,
+      rationale:         'No option data available.',
+      entryPrice:        null,
+      exitPlan:          'N/A',
+    };
+
+  if (callPrompt) {
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4.1-mini-2025-04-14',
+        messages: [{ role: 'user', content: callPrompt }],
+        temperature: 0.2,
+        max_tokens: 400,
+      });
+      callAnalysis = JSON.parse(response.choices[0].message.content);
+    } catch (err) {
+      log.warn(`⚠️ GPT failed on callPrompt for ${symbol}: ${err.message}`);
+    }
+  }
+
+  if (putPrompt) {
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4.1-mini-2025-04-14',
+        messages: [{ role: 'user', content: putPrompt }],
+        temperature: 0.2,
+        max_tokens: 400,
+      });
+      putAnalysis = JSON.parse(response.choices[0].message.content);
+    } catch (err) {
+      log.warn(`⚠️ GPT failed on putPrompt for ${symbol}: ${err.message}`);
+    }
+  }
+
+  // 7) Return whichever structure makes sense
   return {
-    callPick,
-    callAction:    callAnalysis.action,
+    callPick: callAnalysis.contractSymbol
+      ? {
+          contractSymbol:    callAnalysis.contractSymbol,
+          strike:            callAnalysis.strike,
+          expiry:            callAnalysis.expiry,
+          bid:               callAnalysis.bid,
+          ask:               callAnalysis.ask,
+          impliedVolatility: callAnalysis.impliedVolatility,
+          openInterest:      callAnalysis.openInterest,
+          rationale:         callAnalysis.rationale,
+          entryPrice:        callAnalysis.entryPrice,
+          exitPlan:          callAnalysis.exitPlan,
+        }
+      : callPick,
     callRationale: callAnalysis.rationale,
     callExitPlan:  callAnalysis.exitPlan,
 
-    putPick,
-    putAction:    putAnalysis.action,
+    putPick: putAnalysis.contractSymbol
+      ? {
+          contractSymbol:    putAnalysis.contractSymbol,
+          strike:            putAnalysis.strike,
+          expiry:            putAnalysis.expiry,
+          bid:               putAnalysis.bid,
+          ask:               putAnalysis.ask,
+          impliedVolatility: putAnalysis.impliedVolatility,
+          openInterest:      putAnalysis.openInterest,
+          rationale:         putAnalysis.rationale,
+          entryPrice:        putAnalysis.entryPrice,
+          exitPlan:          putAnalysis.exitPlan,
+        }
+      : putPick,
     putRationale: putAnalysis.rationale,
-    putExitPlan:  putAnalysis.exitPlan
-  }
+    putExitPlan:  putAnalysis.exitPlan,
+  };
 }
 
-module.exports = { analyzeOptionsWithGPT }
+module.exports = { analyzeOptionsWithGPT };
+
+// helper to pick ATM if we still need it
+function pickATMFromList(list, underlyingPrice) {
+  if (!Array.isArray(list) || list.length === 0) return null;
+  let best = list[0],
+      bestDiff = Math.abs(best.strike - underlyingPrice);
+  for (const opt of list) {
+    if (typeof opt.strike !== 'number') continue;
+    const diff = Math.abs(opt.strike - underlyingPrice);
+    if (diff < bestDiff) {
+      best = opt;
+      bestDiff = diff;
+    }
+  }
+  return best;
+}

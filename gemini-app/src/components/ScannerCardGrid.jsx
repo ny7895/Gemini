@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 // ——— Reusable badge for numeric scores ———
 const Badge = ({ score, label = 'Score' }) => {
-  const color = score >= 5 ? 'bg-green-500' : score >= 3 ? 'bg-yellow-500' : 'bg-red-500';
+  const color =
+    score >= 5 ? 'bg-green-500' :
+    score >= 3 ? 'bg-yellow-500' :
+    'bg-red-500';
 
   return (
     <span className={`text-white text-xs px-2 py-1 rounded-full ${color}`}>
@@ -14,7 +17,9 @@ const Badge = ({ score, label = 'Score' }) => {
 const StatusBadge = ({ isTopPick, score, earlyCandidate }) => {
   if (isTopPick) {
     return (
-      <span className="text-xs px-2 py-1 bg-purple-600 text-white rounded-full">🌟 Top Pick</span>
+      <span className="text-xs px-2 py-1 bg-purple-600 text-white rounded-full">
+        🌟 Top Pick
+      </span>
     );
   } else if (score >= 4) {
     return (
@@ -24,7 +29,9 @@ const StatusBadge = ({ isTopPick, score, earlyCandidate }) => {
     );
   } else if (earlyCandidate) {
     return (
-      <span className="text-xs px-2 py-1 bg-blue-500 text-white rounded-full">📡 Early Setup</span>
+      <span className="text-xs px-2 py-1 bg-blue-500 text-white rounded-full">
+        📡 Early Setup
+      </span>
     );
   }
   return null;
@@ -44,57 +51,137 @@ const ScannerCardGrid = () => {
   // — fetch only the latest candidates —
   const fetchResults = async () => {
     setLoading(true);
-    const res = await fetch('/api/scanner/candidates');
-    const data = await res.json();
+    try {
+      const res = await fetch('/api/scanner/candidates');
+      const data = await res.json();
 
-    const parsed = data.map((item) => ({
-      ...item,
+      const parsed = data.map((item) => ({
+        ...item,
+        preMarketChange: item.preMarketChange ?? null,
+        preMarketVolSpike: item.preMarketVolSpike ?? null,
+        combinedReasons: Array.isArray(item.combinedReasons)
+          ? item.combinedReasons
+          : item.combinedReasons
+            ? item.combinedReasons.split(', ').filter((r) => r)
+            : [],
+        metrics: item.metrics || {},
+        action: item.action || '',
+        actionRationale: item.actionRationale || '',
+        isDayTradeCandidate: Boolean(item.isDayTradeCandidate),
+        dayTradeBuyPrice: item.dayTradeBuyPrice,
+        dayTradeSellPrice: item.dayTradeSellPrice,
+        longBuyPrice: item.longBuyPrice,
+        longSellPrice: item.longSellPrice,
 
-      // bring in the pre-market fields
-      preMarketChange: item.preMarketChange ?? null,
-      preMarketVolSpike: item.preMarketVolSpike ?? null,
-      combinedReasons: Array.isArray(item.combinedReasons)
-        ? item.combinedReasons
-        : item.combinedReasons
-          ? item.combinedReasons.split(', ').filter((r) => r)
-          : [],
+        callPick: item.callPick ?? null,
+        putPick: item.putPick ?? null,
+        callAction: item.callAction || '',
+        callRationale: item.callRationale || '',
+        putAction: item.putAction || '',
+        putRationale: item.putRationale || '',
+        callExitPlan: item.callExitPlan || '',
+        putExitPlan: item.putExitPlan || '',
+      }));
 
-      metrics: item.metrics || {},
-
-      // GPT analysis fields
-      action: item.action || '',
-      actionRationale: item.actionRationale || '',
-      isDayTradeCandidate: Boolean(item.isDayTradeCandidate),
-      dayTradeBuyPrice: item.dayTradeBuyPrice,
-      dayTradeSellPrice: item.dayTradeSellPrice,
-      longBuyPrice: item.longBuyPrice,
-      longSellPrice: item.longSellPrice,
-      callAction: item.callAction || '',
-      callRationale: item.callRationale || '',
-      putAction: item.putAction || '',
-      putRationale: item.putRationale || '',
-      callExitPlan: item.callExitPlan || '',
-      putExitPlan: item.putExitPlan || '',
-    }));
-
-    setCandidates(parsed);
-    setLoading(false);
+      setCandidates(parsed);
+    } catch (err) {
+      console.error('Error fetching candidates:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchHistory = async () => {
-    const res = await fetch('/api/scanner/history');
-    const data = await res.json();
-    setHistory([...data].reverse());
-    if (data.length) {
-      setTotalScanned(data[0].candidateCount);
+    try {
+      const res = await fetch('/api/scanner/history');
+      const data = await res.json();
+      setHistory([...data].reverse());
+      if (data.length) {
+        setTotalScanned(data[0].candidateCount);
+      }
+    } catch (err) {
+      console.error('Error fetching history:', err);
     }
   };
 
   const runScan = async () => {
     setScanning(true);
-    await fetch('/api/scanner/analyze');
-    await fetchResults();
+    setLoading(true);
+
+    // 1) Kick off the background scan
+    await fetch('/api/scanner/analyze').catch((err) => {
+      console.error('Failed to start scan:', err);
+      setScanning(false);
+      setLoading(false);
+    });
+
+    // 2) Immediately get whatever timestamp is currently at the top
+    let lastTimestamp = null;
+    try {
+      const initRes = await fetch('/api/scanner/candidates');
+      const initData = await initRes.json();
+      lastTimestamp = initData[0]?.timestamp || null;
+    } catch (err) {
+      console.error('Failed to fetch initial timestamp:', err);
+    }
+
+    const startTime = Date.now();
+    const TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+    const POLL_INTERVAL = 10 * 1000; // 10 seconds
+
+    // 3) Poll until we see a new timestamp or timeout
+    while (Date.now() - startTime < TIMEOUT_MS) {
+      await new Promise((r) => setTimeout(r, POLL_INTERVAL));
+      try {
+        const res = await fetch('/api/scanner/candidates');
+        const data = await res.json();
+
+        const newTimestamp = data[0]?.timestamp || null;
+        if (newTimestamp && newTimestamp !== lastTimestamp) {
+          // we have fresh results
+          const parsed = data.map((item) => ({
+            ...item,
+            preMarketChange: item.preMarketChange ?? null,
+            preMarketVolSpike: item.preMarketVolSpike ?? null,
+            combinedReasons: Array.isArray(item.combinedReasons)
+              ? item.combinedReasons
+              : item.combinedReasons
+                ? item.combinedReasons.split(', ').filter((r) => r)
+                : [],
+            metrics: item.metrics || {},
+            action: item.action || '',
+            actionRationale: item.actionRationale || '',
+            isDayTradeCandidate: Boolean(item.isDayTradeCandidate),
+            dayTradeBuyPrice: item.dayTradeBuyPrice,
+            dayTradeSellPrice: item.dayTradeSellPrice,
+            longBuyPrice: item.longBuyPrice,
+            longSellPrice: item.longSellPrice,
+
+            callPick: item.callPick ?? null,
+            putPick: item.putPick ?? null,
+            callAction: item.callAction || '',
+            callRationale: item.callRationale || '',
+            putAction: item.putAction || '',
+            putRationale: item.putRationale || '',
+            callExitPlan: item.callExitPlan || '',
+            putExitPlan: item.putExitPlan || '',
+          }));
+
+          setCandidates(parsed);
+          setLoading(false);
+          setScanning(false);
+          return;
+        }
+      } catch (err) {
+        console.error('Polling failed:', err);
+        // keep trying until timeout
+      }
+    }
+
+    // If we reach here, we’ve timed out
+    console.warn('Scan timed out without fresh results.');
     setScanning(false);
+    setLoading(false);
   };
 
   const handleSelectHistory = async (ts) => {
@@ -129,7 +216,9 @@ const ScannerCardGrid = () => {
     <div className="p-4 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-wrap gap-4 justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">📈 Short Squeeze Scanner</h2>
+        <h2 className="text-2xl font-bold text-gray-800">
+          📈 Short Squeeze Scanner
+        </h2>
         <button
           onClick={runScan}
           className={`px-4 py-2 rounded text-white ${
@@ -143,15 +232,17 @@ const ScannerCardGrid = () => {
 
       {/* Summary */}
       <div className="bg-gray-100 p-3 rounded-lg text-sm mb-4 text-gray-700 shadow-sm border">
-        Scanned <strong>{totalScanned}</strong> stocks, showing <strong>{filtered.length}</strong>{' '}
-        results
+        Scanned <strong>{totalScanned}</strong> stocks, showing{' '}
+        <strong>{filtered.length}</strong> results
       </div>
 
       {/* Controls */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {/* Min Score */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Min Total Score</label>
+          <label className="block text-sm font-semibold mb-1">
+            Min Total Score
+          </label>
           <input
             type="range"
             min="0"
@@ -193,7 +284,9 @@ const ScannerCardGrid = () => {
         </div>
         {/* Scan History */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Scan History</label>
+          <label className="block text-sm font-semibold mb-1">
+            Scan History
+          </label>
           <select
             value={selectedScan}
             onChange={(e) => handleSelectHistory(e.target.value)}
@@ -222,7 +315,9 @@ const ScannerCardGrid = () => {
               {/* Top: symbol + badges */}
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900">{c.symbol}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {c.symbol}
+                  </h3>
                   <Badge score={c.totalScore} label="Total" />
                 </div>
                 <StatusBadge
@@ -235,7 +330,8 @@ const ScannerCardGrid = () => {
               {/* Middle: recommendation + metrics */}
               <div className="flex-grow mt-4">
                 <p className="text-sm font-medium text-gray-800 mb-3">
-                  📋 Recommendation: <span className="font-bold">{c.recommendation}</span>
+                  📋 Recommendation:{' '}
+                  <span className="font-bold">{c.recommendation}</span>
                 </p>
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>
@@ -245,7 +341,8 @@ const ScannerCardGrid = () => {
                     <strong>Setup Score:</strong> {c.setupScore}
                   </li>
                   <li>
-                    <strong>RSI:</strong> {c.rsi != null ? c.rsi.toFixed(2) : '—'}
+                    <strong>RSI:</strong>{' '}
+                    {c.rsi != null ? c.rsi.toFixed(2) : '—'}
                   </li>
                   <li>
                     <strong>Short Float:</strong>{' '}
@@ -256,18 +353,25 @@ const ScannerCardGrid = () => {
                   </li>
                   <li>
                     <strong>Pre-Mkt %:</strong>{' '}
-                    {c.preMarketChange != null ? `${c.preMarketChange.toFixed(1)}%` : '—'}
+                    {c.preMarketChange != null
+                      ? `${c.preMarketChange.toFixed(1)}%`
+                      : '—'}
                   </li>
                   <li>
                     <strong>Pre-Mkt Vol Spike:</strong>{' '}
-                    {c.preMarketVolSpike != null ? c.preMarketVolSpike.toFixed(2) : '—'}
+                    {c.preMarketVolSpike != null
+                      ? c.preMarketVolSpike.toFixed(2)
+                      : '—'}
                   </li>
                   <li>
-                    <strong>Support:</strong> {c.support != null ? `$${c.support.toFixed(2)}` : '—'}
+                    <strong>Support:</strong>{' '}
+                    {c.support != null ? `$${c.support.toFixed(2)}` : '—'}
                   </li>
                   <li>
                     <strong>Resistance:</strong>{' '}
-                    {c.resistance != null ? `$${c.resistance.toFixed(2)}` : '—'}
+                    {c.resistance != null
+                      ? `$${c.resistance.toFixed(2)}`
+                      : '—'}
                   </li>
                   <li>
                     <strong>Float %:</strong>{' '}
@@ -284,37 +388,53 @@ const ScannerCardGrid = () => {
                     <>
                       <li>
                         <strong>Vol Score:</strong>{' '}
-                        {c.metrics.volScore != null ? c.metrics.volScore.toFixed(2) : '—'}
+                        {c.metrics.volScore != null
+                          ? c.metrics.volScore.toFixed(2)
+                          : '—'}
                       </li>
                       <li>
                         <strong>Spike Score:</strong>{' '}
-                        {c.metrics.spikeScore != null ? c.metrics.spikeScore.toFixed(2) : '—'}
+                        {c.metrics.spikeScore != null
+                          ? c.metrics.spikeScore.toFixed(2)
+                          : '—'}
                       </li>
                       <li>
                         <strong>RSI Score:</strong>{' '}
-                        {c.metrics.rsiScore != null ? c.metrics.rsiScore.toFixed(2) : '—'}
+                        {c.metrics.rsiScore != null
+                          ? c.metrics.rsiScore.toFixed(2)
+                          : '—'}
                       </li>
                       <li>
                         <strong>Mom Score:</strong>{' '}
-                        {c.metrics.momScore != null ? c.metrics.momScore.toFixed(2) : '—'}
+                        {c.metrics.momScore != null
+                          ? c.metrics.momScore.toFixed(2)
+                          : '—'}
                       </li>
                       <li>
                         <strong>Float Score:</strong>{' '}
-                        {c.metrics.floatScore != null ? c.metrics.floatScore.toFixed(2) : '—'}
+                        {c.metrics.floatScore != null
+                          ? c.metrics.floatScore.toFixed(2)
+                          : '—'}
                       </li>
                       <li>
                         <strong>Short Score:</strong>{' '}
-                        {c.metrics.shortScore != null ? c.metrics.shortScore.toFixed(2) : '—'}
+                        {c.metrics.shortScore != null
+                          ? c.metrics.shortScore.toFixed(2)
+                          : '—'}
                       </li>
                       <li>
-                        <strong>Breakout:</strong> {c.metrics.breakout ? '✅' : '❌'}
+                        <strong>Breakout:</strong>{' '}
+                        {c.metrics.breakout ? '✅' : '❌'}
                       </li>
                       <li>
-                        <strong>Bounce:</strong> {c.metrics.bounce ? '✅' : '❌'}
+                        <strong>Bounce:</strong>{' '}
+                        {c.metrics.bounce ? '✅' : '❌'}
                       </li>
                       <li>
                         <strong>Price As Of:</strong>{' '}
-                        {c.timestamp ? new Date(c.timestamp).toLocaleString() : '—'}
+                        {c.timestamp
+                          ? new Date(c.timestamp).toLocaleString()
+                          : '—'}
                       </li>
                       <li>
                         <strong>Current Price:</strong>{' '}
@@ -322,11 +442,15 @@ const ScannerCardGrid = () => {
                       </li>
                       <li>
                         <strong>Buy Price:</strong>{' '}
-                        {c.buyPrice != null ? `$${c.buyPrice.toFixed(2)}` : '—'}
+                        {c.buyPrice != null
+                          ? `$${c.buyPrice.toFixed(2)}`
+                          : '—'}
                       </li>
                       <li>
                         <strong>Sell Price:</strong>{' '}
-                        {c.sellPrice != null ? `$${c.sellPrice.toFixed(2)}` : '—'}
+                        {c.sellPrice != null
+                          ? `$${c.sellPrice.toFixed(2)}`
+                          : '—'}
                       </li>
                       <li>
                         <strong>Strategy:</strong>{' '}
@@ -337,7 +461,9 @@ const ScannerCardGrid = () => {
                         <>
                           <li>
                             <strong>Day Entry:</strong>{' '}
-                            {c.dayTradeBuyPrice != null ? `$${c.dayTradeBuyPrice.toFixed(2)}` : '—'}
+                            {c.dayTradeBuyPrice != null
+                              ? `$${c.dayTradeBuyPrice.toFixed(2)}`
+                              : '—'}
                           </li>
                           <li>
                             <strong>Day Exit:</strong>{' '}
@@ -352,11 +478,15 @@ const ScannerCardGrid = () => {
                         <>
                           <li>
                             <strong>Long Entry:</strong>{' '}
-                            {c.longBuyPrice != null ? `$${c.longBuyPrice.toFixed(2)}` : '—'}
+                            {c.longBuyPrice != null
+                              ? `$${c.longBuyPrice.toFixed(2)}`
+                              : '—'}
                           </li>
                           <li>
                             <strong>Long Target:</strong>{' '}
-                            {c.longSellPrice != null ? `$${c.longSellPrice.toFixed(2)}` : '—'}
+                            {c.longSellPrice != null
+                              ? `$${c.longSellPrice.toFixed(2)}`
+                              : '—'}
                           </li>
                         </>
                       )}
@@ -377,31 +507,49 @@ const ScannerCardGrid = () => {
                 <h4 className="font-medium">GPT analysis</h4>
                 <p>{c.summary}</p>
               </div>
+
               <div className="mt-6">
                 <h4 className="font-medium mb-2">Options Suggestions</h4>
                 <table className="w-full text-sm text-left text-gray-700 border">
                   <thead>
                     <tr>
                       <th className="px-2 py-1 border">Type</th>
+                      <th className="px-2 py-1 border">Contract</th>
+                      <th className="px-2 py-1 border">Strike/Expiry</th>
                       <th className="px-2 py-1 border">Entry Action</th>
                       <th className="px-2 py-1 border">Entry Rationale</th>
                       <th className="px-2 py-1 border">Exit Plan</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="px-2 py-1 border">Call</td>
-                      <td className="px-2 py-1 border">{c.callAction}</td>
-                      <td className="px-2 py-1 border">{c.callRationale}</td>
-                      <td className="px-2 py-1 border">{c.callExitPlan}</td>
-
-                    </tr>
-                    <tr>
-                      <td className="px-2 py-1 border">Put</td>
-                      <td className="px-2 py-1 border">{c.putAction}</td>
-                      <td className="px-2 py-1 border">{c.putRationale}</td>
-                      <td className="px-2 py-1 border">{c.putExitPlan}</td>
-                    </tr>
+                  <tr>
+  <td className="px-2 py-1 border">Call</td>
+  <td className="px-2 py-1 border">
+    {c.callPick?.contractSymbol || '—'}
+  </td>
+  <td className="px-2 py-1 border">
+    {c.callPick?.strike != null
+      ? `$${c.callPick.strike.toFixed(2)} / ${c.callPick.expiry}`
+      : '—'}
+  </td>
+  <td className="px-2 py-1 border">{c.callAction}</td>
+  <td className="px-2 py-1 border">{c.callRationale}</td>
+  <td className="px-2 py-1 border">{c.callExitPlan}</td>
+</tr>
+<tr>
+  <td className="px-2 py-1 border">Put</td>
+  <td className="px-2 py-1 border">
+    {c.putPick?.contractSymbol || '—'}
+  </td>
+  <td className="px-2 py-1 border">
+    {c.putPick?.strike != null
+      ? `$${c.putPick.strike.toFixed(2)} / ${c.putPick.expiry}`
+      : '—'}
+  </td>
+  <td className="px-2 py-1 border">{c.putAction}</td>
+  <td className="px-2 py-1 border">{c.putRationale}</td>
+  <td className="px-2 py-1 border">{c.putExitPlan}</td>
+</tr>
                   </tbody>
                 </table>
               </div>

@@ -1,3 +1,5 @@
+// server/utils/db.cjs
+
 const Database = require('better-sqlite3')
 const path     = require('path')
 
@@ -107,6 +109,10 @@ function getPriceSnapshots() {
 
 /**
  * Save an array of results into squeezeCandidates and record history.
+ *
+ * We now expect that fields like `metrics`, `reasons`, `setupReasons`,
+ * `callPick`, and `putPick` are already JSON‐stringified (or plain strings).
+ * We no longer wrap them in JSON.stringify here.
  */
 function saveResults(results) {
   const insertCandidate = db.prepare(`
@@ -164,56 +170,57 @@ function saveResults(results) {
   const now = new Date().toISOString()
   const transaction = db.transaction((items) => {
     for (const item of items) {
+      console.log('→ Inserting candidate:', item);
       insertCandidate.run({
-        symbol:             item.symbol,
-        price:              item.price,
-        volume:             item.volume,
-        rsi:                item.rsi,
-        momentum:           item.momentum,
-        volumeSpike:        item.volumeSpike ? 1 : 0,
-        support:            item.support,
-        resistance:         item.resistance,
-        floatPercent:       item.float,
-        shortFloat:         item.shortFloat,
-        score:              item.score,
-        setupScore:         item.setupScore,
-        earlyCandidate:     item.earlyCandidate ? 1 : 0,
+        symbol:               item.symbol,
+        price:                item.price,
+        volume:               item.volume,
+        rsi:                  item.rsi,
+        momentum:             item.momentum,
+        volumeSpike:          item.volumeSpike ? 1 : 0,
+        support:              item.support,
+        resistance:           item.resistance,
+        floatPercent:         item.floatPercent,
+        shortFloat:           item.shortFloat,
+        score:                item.score,
+        setupScore:           item.setupScore,
+        earlyCandidate:       item.earlyCandidate ? 1 : 0,
 
-        totalScore:         item.totalScore,
-        isTopPick:          item.isTopPick ? 1 : 0,
-        combinedReasons:    item.combinedReasons,
-        metrics:            JSON.stringify(item.metrics),
+        totalScore:           item.totalScore,
+        isTopPick:            item.isTopPick ? 1 : 0,
+        combinedReasons:      item.combinedReasons,
+        metrics:              item.metrics,         // already a JSON string
 
-        recommendation:     item.recommendation,
-        suggestion:         item.suggestion,
-        summary:            item.summary,
-        buyPrice:           item.buyPrice,
-        sellPrice:          item.sellPrice,
+        recommendation:       item.recommendation || null,
+        suggestion:           item.suggestion,
+        summary:              item.summary,
+        buyPrice:             item.buyPrice,
+        sellPrice:            item.sellPrice,
 
-        action:             item.action,
-        actionRationale:    item.actionRationale,
-        isDayTradeCandidate:item.isDayTradeCandidate ? 1 : 0,
-        dayTradeBuyPrice:   item.dayTradeBuyPrice,
-        dayTradeSellPrice:  item.dayTradeSellPrice,
-        longBuyPrice:       item.longBuyPrice,
-        longSellPrice:      item.longSellPrice,
+        action:               item.action,
+        actionRationale:      item.actionRationale,
+        isDayTradeCandidate:  item.isDayTradeCandidate ? 1 : 0,
+        dayTradeBuyPrice:     item.dayTradeBuyPrice,
+        dayTradeSellPrice:    item.dayTradeSellPrice,
+        longBuyPrice:         item.longBuyPrice,
+        longSellPrice:        item.longSellPrice,
 
-        preMarketChange:    item.preMarketChange,
-        preMarketVolSpike:  item.preMarketVolSpike,
+        preMarketChange:      item.preMarketChange,
+        preMarketVolSpike:    item.preMarketVolSpike,
 
-        reasons:            JSON.stringify(item.reasons),
-        setupReasons:       JSON.stringify(item.setupReasons),
+        reasons:              item.reasons,       // already a plain or JSON‐string
+        setupReasons:         item.setupReasons,  // same
 
-        callPick:           JSON.stringify(item.callPick),
-        putPick:            JSON.stringify(item.putPick),
-        callAction:         item.callAction,
-        callRationale:      item.callRationale,
-        putAction:          item.putAction,
-        putRationale:       item.putRationale,
-        callExitPlan:       item.callExitPlan,
-        putExitPlan:        item.putExitPlan,
+        callPick:             item.callPick,      // already JSON string
+        putPick:              item.putPick,       // already JSON string
+        callAction:           item.callAction,
+        callRationale:        item.callRationale,
+        putAction:            item.putAction,
+        putRationale:         item.putRationale,
+        callExitPlan:         item.callExitPlan,
+        putExitPlan:          item.putExitPlan,
 
-        timestamp:          now
+        timestamp:            now
       })
     }
     insertHistory.run(now, items.length)

@@ -1,7 +1,9 @@
+// server/routes/scanner.cjs
+
 const express = require('express');
 const router  = express.Router();
 
-const { analyzeMarket }        = require('../controllers/scannerController.cjs');
+const { triggerScan } = require('../controllers/scannerController.cjs');
 const { db }                   = require('../utils/db.cjs');
 const { getLatestCandidates, getScanHistory } = require('../utils/db.cjs');
 
@@ -48,8 +50,9 @@ function mapRow(r) {
     buyPrice:            r.buyPrice,
     sellPrice:           r.sellPrice,
 
-    reasons:             JSON.parse(r.reasons || '[]'),
-    setupReasons:        JSON.parse(r.setupReasons || '[]'),
+    // Treat reasons and setupReasons as comma-separated lists, not JSON
+    reasons:             r.reasons ? r.reasons.split(', ') : [],
+    setupReasons:        r.setupReasons ? r.setupReasons.split(', ') : [],
     callPick:            r.callPick ? JSON.parse(r.callPick) : null,
 
     callAction:          r.callAction,
@@ -106,7 +109,7 @@ router.get('/history', (req, res) => {
 });
 
 // Run full market analysis
-router.get('/analyze', analyzeMarket);
+router.get('/analyze', triggerScan);
 
 // Health check endpoint
 router.get('/ping', (req, res) => {
