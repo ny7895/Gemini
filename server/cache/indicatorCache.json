@@ -270,10 +270,10 @@
     }
   },
   "CLRB": {
-    "ts": 1749005426209,
+    "ts": 1749051979757,
     "data": {
       "symbol": "CLRB",
-      "price": 0.2776,
+      "price": 0.599,
       "rsi": [
         null,
         null,
@@ -295,12 +295,13 @@
         46.66,
         46.66,
         46.66,
-        58.24
+        58.24,
+        91.27
       ],
-      "momentum": 0.0769,
+      "momentum": 1.1557,
       "volumeSpike": true,
       "support": 0.23999999463558197,
-      "resistance": 0.2800000011920929,
+      "resistance": 0.603600025177002,
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": -1.2173,
@@ -992,17 +993,42 @@
     }
   },
   "TRUG": {
-    "ts": 1748880304623,
+    "ts": 1749051979757,
     "data": {
       "symbol": "TRUG",
-      "price": 0.2425,
-      "rsi": 38.05,
-      "momentum": 0.0923,
-      "volumeSpike": true,
+      "price": 0.235,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        38.05,
+        37.07,
+        33.23,
+        45.42,
+        42.26,
+        41.48,
+        41.07,
+        42.29
+      ],
+      "momentum": 0.0175,
+      "volumeSpike": false,
       "support": 0.1979999989271164,
       "resistance": 0.2840000092983246,
-      "floatPercent": null,
-      "shortPercent": null
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -0.756,
+      "newsCount": 2
     }
   },
   "VCIG": {
@@ -1384,10 +1410,10 @@
     }
   },
   "TSSI": {
-    "ts": 1749005785865,
+    "ts": 1749051979757,
     "data": {
       "symbol": "TSSI",
-      "price": 15.14,
+      "price": 16.93,
       "rsi": [
         null,
         null,
@@ -1409,12 +1435,13 @@
         65.8,
         71.01,
         71.05,
-        72.55
+        72.55,
+        76.34
       ],
-      "momentum": 0.047,
+      "momentum": 0.1295,
       "volumeSpike": false,
       "support": 6.869999885559082,
-      "resistance": 15.4399995803833,
+      "resistance": 17.100000381469727,
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": 0.2383,
@@ -2536,10 +2563,10 @@
     }
   },
   "TWG": {
-    "ts": 1748975327866,
+    "ts": 1749051979757,
     "data": {
       "symbol": "TWG",
-      "price": 0.1471,
+      "price": 0.1459,
       "rsi": [
         null,
         null,
@@ -2561,9 +2588,10 @@
         46.26,
         44.99,
         50.16,
-        52.88
+        49.44,
+        52.3
       ],
-      "momentum": 0.028,
+      "momentum": 0.0275,
       "volumeSpike": false,
       "support": 0.13600000739097595,
       "resistance": 0.17599999904632568,
@@ -3010,10 +3038,10 @@
     }
   },
   "SPWH": {
-    "ts": 1749005785864,
+    "ts": 1749051979757,
     "data": {
       "symbol": "SPWH",
-      "price": 2.32,
+      "price": 2.58,
       "rsi": [
         null,
         null,
@@ -3035,16 +3063,17 @@
         59.13,
         57.19,
         64,
-        72.08
+        72.08,
+        77.35
       ],
-      "momentum": 0.1317,
+      "momentum": 0.1121,
       "volumeSpike": true,
       "support": 1.6799999475479126,
-      "resistance": 2.319999933242798,
+      "resistance": 2.5799999237060547,
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": -0.8744,
-      "newsCount": 4
+      "newsCount": 6
     }
   },
   "VTLE": {
@@ -5312,6 +5341,84 @@
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": 0.8698,
+      "newsCount": 0
+    }
+  },
+  "STSS": {
+    "ts": 1749051979757,
+    "data": {
+      "symbol": "STSS",
+      "price": 5.92,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        35.71,
+        32.09,
+        31.62,
+        31.62,
+        30.75,
+        27.78,
+        34.24,
+        70.43
+      ],
+      "momentum": 0.5775,
+      "volumeSpike": true,
+      "support": 3.569999933242798,
+      "resistance": 5.900000095367432,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -2223.9713,
+      "newsCount": 0
+    }
+  },
+  "TGL": {
+    "ts": 1749051979757,
+    "data": {
+      "symbol": "TGL",
+      "price": 1.68,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        33.33,
+        35.54,
+        39.15,
+        36.92,
+        39.16,
+        37.95,
+        40.33,
+        48.02
+      ],
+      "momentum": 0.1463,
+      "volumeSpike": true,
+      "support": 1.340000033378601,
+      "resistance": 2.0999999046325684,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -383.6121,
       "newsCount": 0
     }
   }

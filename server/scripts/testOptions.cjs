@@ -52,7 +52,7 @@ async function testSymbol(symbol) {
 getContractsInRange('AAPL').then(console.log);
 
 ;(async () => {
-  const tickers = ['AAPL', 'TSLA', 'MSFT', 'GOOG'];
+  const tickers = ['AAPL', 'TSLA', 'MSFT', 'GOOG', 'SPWH', 'CLRB'];
   const output = [];
 
   for (const sym of tickers) {

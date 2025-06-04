@@ -4,9 +4,11 @@ const base = import.meta.env.VITE_API_BASE_URL;
 // ——— Reusable badge for numeric scores ———
 const Badge = ({ score, label = 'Score' }) => {
   const color =
-    score >= 5 ? 'bg-green-500' :
-    score >= 3 ? 'bg-yellow-500' :
-    'bg-red-500';
+    score >= 5
+      ? 'bg-green-500'
+      : score >= 3
+      ? 'bg-yellow-500'
+      : 'bg-red-500';
 
   return (
     <span className={`text-white text-xs px-2 py-1 rounded-full ${color}`}>
@@ -63,8 +65,8 @@ const ScannerCardGrid = () => {
         combinedReasons: Array.isArray(item.combinedReasons)
           ? item.combinedReasons
           : item.combinedReasons
-            ? item.combinedReasons.split(', ').filter((r) => r)
-            : [],
+          ? item.combinedReasons.split(', ').filter((r) => r)
+          : [],
         metrics: item.metrics || {},
         action: item.action || '',
         actionRationale: item.actionRationale || '',
@@ -73,7 +75,6 @@ const ScannerCardGrid = () => {
         dayTradeSellPrice: item.dayTradeSellPrice,
         longBuyPrice: item.longBuyPrice,
         longSellPrice: item.longSellPrice,
-
         callPick: item.callPick ?? null,
         putPick: item.putPick ?? null,
         callAction: item.callAction || '',
@@ -147,8 +148,8 @@ const ScannerCardGrid = () => {
             combinedReasons: Array.isArray(item.combinedReasons)
               ? item.combinedReasons
               : item.combinedReasons
-                ? item.combinedReasons.split(', ').filter((r) => r)
-                : [],
+              ? item.combinedReasons.split(', ').filter((r) => r)
+              : [],
             metrics: item.metrics || {},
             action: item.action || '',
             actionRationale: item.actionRationale || '',
@@ -157,7 +158,6 @@ const ScannerCardGrid = () => {
             dayTradeSellPrice: item.dayTradeSellPrice,
             longBuyPrice: item.longBuyPrice,
             longSellPrice: item.longSellPrice,
-
             callPick: item.callPick ?? null,
             putPick: item.putPick ?? null,
             callAction: item.callAction || '',
@@ -175,7 +175,6 @@ const ScannerCardGrid = () => {
         }
       } catch (err) {
         console.error('Polling failed:', err);
-        // keep trying until timeout
       }
     }
 
@@ -303,7 +302,7 @@ const ScannerCardGrid = () => {
         </div>
       </div>
 
-      {/* Card Grid */}
+      {/* Candidate Cards */}
       {loading ? (
         <p className="text-gray-500">Loading...</p>
       ) : (
@@ -311,7 +310,12 @@ const ScannerCardGrid = () => {
           {filtered.map((c, i) => (
             <div
               key={i}
-              className="flex flex-col justify-between h-full rounded-2xl p-6 bg-white border border-gray-200 shadow"
+              className="
+                flex flex-col justify-between p-6 bg-white border border-gray-200 shadow
+                rounded-2xl
+                max-h-[32rem]      /* card max-height */
+                overflow-auto      /* scroll if content overflows */
+              "
             >
               {/* Top: symbol + badges */}
               <div>
@@ -329,7 +333,7 @@ const ScannerCardGrid = () => {
               </div>
 
               {/* Middle: recommendation + metrics */}
-              <div className="flex-grow mt-4">
+              <div className="mt-4">
                 <p className="text-sm font-medium text-gray-800 mb-3">
                   📋 Recommendation:{' '}
                   <span className="font-bold">{c.recommendation}</span>
@@ -347,10 +351,13 @@ const ScannerCardGrid = () => {
                   </li>
                   <li>
                     <strong>Short Float:</strong>{' '}
-                    {c.shortFloat != null ? `${c.shortFloat.toFixed(2)}%` : '—'}
+                    {c.shortFloat != null
+                      ? `${c.shortFloat.toFixed(2)}%`
+                      : '—'}
                   </li>
                   <li>
-                    <strong>Volume Spike:</strong> {c.volumeSpike ? '✔️' : '❌'}
+                    <strong>Volume Spike:</strong>{' '}
+                    {c.volumeSpike ? '✔️' : '❌'}
                   </li>
                   <li>
                     <strong>Pre-Mkt %:</strong>{' '}
@@ -381,7 +388,8 @@ const ScannerCardGrid = () => {
 
                   {c.combinedReasons.length > 0 && (
                     <li>
-                      <strong>All Reasons:</strong> {c.combinedReasons.join(', ')}
+                      <strong>All Reasons:</strong>{' '}
+                      {c.combinedReasons.join(', ')}
                     </li>
                   )}
 
@@ -496,7 +504,8 @@ const ScannerCardGrid = () => {
                         <strong>GPT Action:</strong> {c.action || '—'}
                       </li>
                       <li>
-                        <strong>GPT Rationale:</strong> {c.actionRationale || '—'}
+                        <strong>GPT Rationale:</strong>{' '}
+                        {c.actionRationale || '—'}
                       </li>
                     </>
                   )}
@@ -508,56 +517,184 @@ const ScannerCardGrid = () => {
                 <h4 className="font-medium">GPT analysis</h4>
                 <p>{c.summary}</p>
               </div>
-
-              <div className="mt-6">
-                <h4 className="font-medium mb-2">Options Suggestions</h4>
-                <table className="w-full text-sm text-left text-gray-700 border">
-                  <thead>
-                    <tr>
-                      <th className="px-2 py-1 border">Type</th>
-                      <th className="px-2 py-1 border">Contract</th>
-                      <th className="px-2 py-1 border">Strike/Expiry</th>
-                      <th className="px-2 py-1 border">Entry Action</th>
-                      <th className="px-2 py-1 border">Entry Rationale</th>
-                      <th className="px-2 py-1 border">Exit Plan</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="px-2 py-1 border">Call</td>
-                      <td className="px-2 py-1 border">
-                        {c.callPick?.contractSymbol || '—'}
-                      </td>
-                      <td className="px-2 py-1 border">
-                        {c.callPick?.strike != null
-                          ? `$${c.callPick.strike.toFixed(2)} / ${c.callPick.expiry}`
-                          : '—'}
-                      </td>
-                      <td className="px-2 py-1 border">{c.callAction}</td>
-                      <td className="px-2 py-1 border">{c.callRationale}</td>
-                      <td className="px-2 py-1 border">{c.callExitPlan}</td>
-                    </tr>
-                    <tr>
-                      <td className="px-2 py-1 border">Put</td>
-                      <td className="px-2 py-1 border">
-                        {c.putPick?.contractSymbol || '—'}
-                      </td>
-                      <td className="px-2 py-1 border">
-                        {c.putPick?.strike != null
-                          ? `$${c.putPick.strike.toFixed(2)} / ${c.putPick.expiry}`
-                          : '—'}
-                      </td>
-                      <td className="px-2 py-1 border">{c.putAction}</td>
-                      <td className="px-2 py-1 border">{c.putRationale}</td>
-                      <td className="px-2 py-1 border">{c.putExitPlan}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
             </div>
           ))}
         </div>
       )}
+
+{/* ———————————————— Options Suggestions Section ———————————————— */}
+{!loading && filtered.length > 0 && (
+  <div className="mt-12">
+    <h3 className="text-2xl font-bold text-gray-800 mb-4">
+      Options Suggestions
+    </h3>
+
+    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-8">
+      {filtered.map((c, idx) => {
+        if (!c.callPick && !c.putPick) return null;
+
+        return (
+          <div
+            key={idx}
+            className="p-6 bg-white border border-gray-200 shadow-lg rounded-2xl"
+          >
+            {/* Symbol Header */}
+            <h4 className="text-xl font-semibold text-gray-900 mb-4">
+              {c.symbol}
+            </h4>
+
+            <div className="flex flex-col lg:flex-row lg:space-x-6">
+              {/* —————————————— CALL SIDE —————————————— */}
+              {c.callPick && (
+                <div className="flex-1 mb-6 lg:mb-0">
+                  <h5 className="text-lg font-medium text-blue-600 mb-2">
+                    Call Option
+                  </h5>
+                  <ul className="space-y-2 text-base text-gray-700">
+                    <li>
+                      <strong>Contract:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.contractSymbol}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Strike / Expiry:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.strike != null
+                          ? `$${c.callPick.strike.toFixed(2)} / ${c.callPick.expiry}`
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Bid:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.bid != null ? c.callPick.bid : '—'}
+                      </span>{' '}
+                      &nbsp; <strong>Ask:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.ask != null ? c.callPick.ask : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Implied Vol:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.impliedVolatility != null
+                          ? c.callPick.impliedVolatility.toFixed(2)
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Open Interest:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.openInterest != null
+                          ? c.callPick.openInterest
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Rationale:</strong>
+                      <div className="mt-1 bg-gray-50 p-2 rounded text-sm leading-snug whitespace-pre-wrap">
+                        {c.callPick.rationale || '—'}
+                      </div>
+                    </li>
+                    <li>
+                      <strong>Entry Price:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.callPick.entryPrice != null
+                          ? c.callPick.entryPrice
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Exit Plan:</strong>
+                      <div className="mt-1 bg-gray-50 p-2 rounded text-sm leading-snug whitespace-pre-wrap">
+                        {c.callPick.exitPlan || '—'}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              )}
+
+              {/* —————————————— PUT SIDE —————————————— */}
+              {c.putPick && (
+                <div className="flex-1">
+                  <h5 className="text-lg font-medium text-red-600 mb-2">
+                    Put Option
+                  </h5>
+                  <ul className="space-y-2 text-base text-gray-700">
+                    <li>
+                      <strong>Contract:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.contractSymbol}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Strike / Expiry:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.strike != null
+                          ? `$${c.putPick.strike.toFixed(2)} / ${c.putPick.expiry}`
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Bid:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.bid != null ? c.putPick.bid : '—'}
+                      </span>{' '}
+                      &nbsp; <strong>Ask:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.ask != null ? c.putPick.ask : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Implied Vol:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.impliedVolatility != null
+                          ? c.putPick.impliedVolatility.toFixed(2)
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Open Interest:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.openInterest != null
+                          ? c.putPick.openInterest
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Rationale:</strong>
+                      <div className="mt-1 bg-gray-50 p-2 rounded text-sm leading-snug whitespace-pre-wrap">
+                        {c.putPick.rationale || '—'}
+                      </div>
+                    </li>
+                    <li>
+                      <strong>Entry Price:</strong>{' '}
+                      <span className="text-gray-900">
+                        {c.putPick.entryPrice != null
+                          ? c.putPick.entryPrice
+                          : '—'}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Exit Plan:</strong>
+                      <div className="mt-1 bg-gray-50 p-2 rounded text-sm leading-snug whitespace-pre-wrap">
+                        {c.putPick.exitPlan || '—'}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+)}
+
+
+
     </div>
   );
 };

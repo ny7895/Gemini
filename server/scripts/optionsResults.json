@@ -3,14 +3,14 @@
     "symbol": "AAPL",
     "call": {
       "type": "call",
-      "contractSymbol": "AAPL250606C00202500",
-      "strike": 202.5,
+      "contractSymbol": "AAPL250606C00205000",
+      "strike": 205,
       "expiry": "2025-06-06"
     },
     "put": {
       "type": "put",
-      "contractSymbol": "AAPL250606P00202500",
-      "strike": 202.5,
+      "contractSymbol": "AAPL250606P00205000",
+      "strike": 205,
       "expiry": "2025-06-06"
     }
   },
@@ -18,14 +18,14 @@
     "symbol": "TSLA",
     "call": {
       "type": "call",
-      "contractSymbol": "TSLA250606C00350000",
-      "strike": 350,
+      "contractSymbol": "TSLA250606C00332500",
+      "strike": 332.5,
       "expiry": "2025-06-06"
     },
     "put": {
       "type": "put",
-      "contractSymbol": "TSLA250606P00350000",
-      "strike": 350,
+      "contractSymbol": "TSLA250606P00332500",
+      "strike": 332.5,
       "expiry": "2025-06-06"
     }
   },
@@ -33,14 +33,14 @@
     "symbol": "MSFT",
     "call": {
       "type": "call",
-      "contractSymbol": "MSFT250606C00462500",
-      "strike": 462.5,
+      "contractSymbol": "MSFT250606C00465000",
+      "strike": 465,
       "expiry": "2025-06-06"
     },
     "put": {
       "type": "put",
-      "contractSymbol": "MSFT250606P00462500",
-      "strike": 462.5,
+      "contractSymbol": "MSFT250606P00465000",
+      "strike": 465,
       "expiry": "2025-06-06"
     }
   },
@@ -57,6 +57,36 @@
       "contractSymbol": "GOOG250606P00167500",
       "strike": 167.5,
       "expiry": "2025-06-06"
+    }
+  },
+  {
+    "symbol": "SPWH",
+    "call": {
+      "type": "call",
+      "contractSymbol": "SPWH250620C00002500",
+      "strike": 2.5,
+      "expiry": "2025-06-20"
+    },
+    "put": {
+      "type": "put",
+      "contractSymbol": "SPWH250620P00002500",
+      "strike": 2.5,
+      "expiry": "2025-06-20"
+    }
+  },
+  {
+    "symbol": "CLRB",
+    "call": {
+      "type": "call",
+      "contractSymbol": "CLRB250620C00000500",
+      "strike": 0.5,
+      "expiry": "2025-06-20"
+    },
+    "put": {
+      "type": "put",
+      "contractSymbol": "CLRB250815P00000500",
+      "strike": 0.5,
+      "expiry": "2025-08-15"
     }
   }
 ]

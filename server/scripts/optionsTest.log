@@ -4,9 +4,9 @@ Please consider completing the survey at https://bit.ly/yahoo-finance-api-feedba
 Fetching crumb and cookies from https://finance.yahoo.com/quote/AAPL...
 We expected a redirect to guce.yahoo.com, but got https://finance.yahoo.com/quote/AAPL/
 We'll try to continue anyway - you can safely ignore this if the request succeeds
-Success. Cookie expires on Wed Jun 03 2026 19:08:30 GMT-0600 (Mountain Daylight Time)
+Success. Cookie expires on Thu Jun 04 2026 15:39:49 GMT-0600 (Mountain Daylight Time)
 fetch https://query1.finance.yahoo.com/v1/test/getcrumb
-New crumb: ju0xzTczRHC
+New crumb: eMZElvRggaD
 [optionsService] AAPL raw expirationDates (first 5): Thu Jun 05 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 12 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 26 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Wed Jul 02 2025 18:00:00 GMT-0600 (Mountain Daylight Time) (total=20)
 [optionsService] AAPL will fetch contracts for expirations from 2025-06-06 up through 2025-08-15
 [optionsService] AAPL raw expirationDates (first 5): Thu Jun 05 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 12 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 26 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Wed Jul 02 2025 18:00:00 GMT-0600 (Mountain Daylight Time) (total=20)
@@ -17,8 +17,8 @@ New crumb: ju0xzTczRHC
 [optionsService] AAPL chainForDate summary: calls.length=55, puts.length=44
 [optionsService] AAPL sample call strikes: 110,120,125,130,135
 [optionsService] AAPL 2025-06-13: calls.length=53, puts.length=39
-[optionsService] AAPL underlyingPrice: 203.155
-[optionsService] AAPL pickATMContract returned call: AAPL250606C00202500
+[optionsService] AAPL underlyingPrice: 204.4112
+[optionsService] AAPL pickATMContract returned call: AAPL250606C00205000
 [testOptions] AAPL call result: [object Object]
 [optionsService] AAPL 2025-06-20: calls.length=77, puts.length=75
 [optionsService] AAPL raw expirationDates (first 5): Thu Jun 05 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 12 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 26 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Wed Jul 02 2025 18:00:00 GMT-0600 (Mountain Daylight Time) (total=20)
@@ -29,8 +29,8 @@ New crumb: ju0xzTczRHC
 [optionsService] AAPL chainForDate summary: calls.length=55, puts.length=44
 [optionsService] AAPL sample put strikes: 110,120,125,130,135
 [optionsService] AAPL 2025-07-03: calls.length=26, puts.length=23
-[optionsService] AAPL underlyingPrice: 203.1502
-[optionsService] AAPL pickATMContract returned put: AAPL250606P00202500
+[optionsService] AAPL underlyingPrice: 204.42
+[optionsService] AAPL pickATMContract returned put: AAPL250606P00205000
 [testOptions] AAPL put result: [object Object]
 
 === Testing options for TSLA ===
@@ -44,8 +44,8 @@ New crumb: ju0xzTczRHC
 [optionsService] TSLA sample call strikes: 50,55,60,65,70
 [optionsService] AAPL 2025-08-15: calls.length=55, puts.length=47
 [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
-[optionsService] TSLA underlyingPrice: 349.95
-[optionsService] TSLA pickATMContract returned call: TSLA250606C00350000
+[optionsService] TSLA underlyingPrice: 333.595
+[optionsService] TSLA pickATMContract returned call: TSLA250606C00332500
 [testOptions] TSLA call result: [object Object]
 [optionsService] TSLA raw expirationDates (first 5): Thu Jun 05 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 12 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 26 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Wed Jul 02 2025 18:00:00 GMT-0600 (Mountain Daylight Time) (total=20)
 [optionsService] TSLA will search expirations from nearest up through: 2025-08-15
@@ -53,8 +53,8 @@ New crumb: ju0xzTczRHC
 [optionsService] TSLA using expiration date: 2025-06-06 (rawTs=1749168000)
 [optionsService] TSLA chainForDate summary: calls.length=122, puts.length=103
 [optionsService] TSLA sample put strikes: 50,55,60,65,70
-[optionsService] TSLA underlyingPrice: 349.9105
-[optionsService] TSLA pickATMContract returned put: TSLA250606P00350000
+[optionsService] TSLA underlyingPrice: 333.595
+[optionsService] TSLA pickATMContract returned put: TSLA250606P00332500
 [testOptions] TSLA put result: [object Object]
 
 === Testing options for MSFT ===
@@ -64,8 +64,8 @@ New crumb: ju0xzTczRHC
 [optionsService] MSFT using expiration date: 2025-06-06 (rawTs=1749168000)
 [optionsService] MSFT chainForDate summary: calls.length=64, puts.length=60
 [optionsService] MSFT sample call strikes: 230,250,285,290,305
-[optionsService] MSFT underlyingPrice: 463.4
-[optionsService] MSFT pickATMContract returned call: MSFT250606C00462500
+[optionsService] MSFT underlyingPrice: 464.68
+[optionsService] MSFT pickATMContract returned call: MSFT250606C00465000
 [testOptions] MSFT call result: [object Object]
 [optionsService] MSFT raw expirationDates (first 5): Thu Jun 05 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 12 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 26 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Wed Jul 02 2025 18:00:00 GMT-0600 (Mountain Daylight Time) (total=19)
 [optionsService] MSFT will search expirations from nearest up through: 2025-08-15
@@ -73,8 +73,8 @@ New crumb: ju0xzTczRHC
 [optionsService] MSFT using expiration date: 2025-06-06 (rawTs=1749168000)
 [optionsService] MSFT chainForDate summary: calls.length=64, puts.length=60
 [optionsService] MSFT sample put strikes: 225,230,240,265,270
-[optionsService] MSFT underlyingPrice: 463.4
-[optionsService] MSFT pickATMContract returned put: MSFT250606P00462500
+[optionsService] MSFT underlyingPrice: 464.68
+[optionsService] MSFT pickATMContract returned put: MSFT250606P00465000
 [testOptions] MSFT put result: [object Object]
 
 === Testing options for GOOG ===
@@ -84,7 +84,7 @@ New crumb: ju0xzTczRHC
 [optionsService] GOOG using expiration date: 2025-06-06 (rawTs=1749168000)
 [optionsService] GOOG chainForDate summary: calls.length=41, puts.length=41
 [optionsService] GOOG sample call strikes: 80,95,100,110,115
-[optionsService] GOOG underlyingPrice: 168.385
+[optionsService] GOOG underlyingPrice: 168.35
 [optionsService] GOOG pickATMContract returned call: GOOG250606C00167500
 [testOptions] GOOG call result: [object Object]
 [optionsService] GOOG raw expirationDates (first 5): Thu Jun 05 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 12 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jun 26 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Wed Jul 02 2025 18:00:00 GMT-0600 (Mountain Daylight Time) (total=20)
@@ -93,8 +93,49 @@ New crumb: ju0xzTczRHC
 [optionsService] GOOG using expiration date: 2025-06-06 (rawTs=1749168000)
 [optionsService] GOOG chainForDate summary: calls.length=41, puts.length=41
 [optionsService] GOOG sample put strikes: 80,90,95,100,105
-[optionsService] GOOG underlyingPrice: 168.385
+[optionsService] GOOG underlyingPrice: 168.35
 [optionsService] GOOG pickATMContract returned put: GOOG250606P00167500
 [testOptions] GOOG put result: [object Object]
+
+=== Testing options for SPWH ===
+[optionsService] SPWH raw expirationDates (first 5): Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jul 17 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Oct 16 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jan 15 2026 17:00:00 GMT-0700 (Mountain Standard Time) (total=4)
+[optionsService] SPWH will search expirations from nearest up through: 2025-10-17
+[optionsService] SPWH chainForDate on 2025-06-20 → calls.length=4
+[optionsService] SPWH using expiration date: 2025-06-20 (rawTs=1750377600)
+[optionsService] SPWH chainForDate summary: calls.length=4, puts.length=4
+[optionsService] SPWH sample call strikes: 1,1.5,2,2.5
+[optionsService] SPWH underlyingPrice: 2.56
+[optionsService] SPWH pickATMContract returned call: SPWH250620C00002500
+[testOptions] SPWH call result: [object Object]
+[optionsService] SPWH raw expirationDates (first 5): Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jul 17 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Oct 16 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Jan 15 2026 17:00:00 GMT-0700 (Mountain Standard Time) (total=4)
+[optionsService] SPWH will search expirations from nearest up through: 2025-10-17
+[optionsService] SPWH chainForDate on 2025-06-20 → puts.length=4
+[optionsService] SPWH using expiration date: 2025-06-20 (rawTs=1750377600)
+[optionsService] SPWH chainForDate summary: calls.length=4, puts.length=4
+[optionsService] SPWH sample put strikes: 1.5,2,2.5,7.5
+[optionsService] SPWH underlyingPrice: 2.56
+[optionsService] SPWH pickATMContract returned put: SPWH250620P00002500
+[testOptions] SPWH put result: [object Object]
+
+=== Testing options for CLRB ===
+[optionsService] CLRB raw expirationDates (first 5): Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Aug 14 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Nov 20 2025 17:00:00 GMT-0700 (Mountain Standard Time) (total=3)
+[optionsService] CLRB will search expirations from nearest up through: 2025-08-15
+[optionsService] CLRB chainForDate on 2025-06-20 → calls.length=1
+[optionsService] CLRB using expiration date: 2025-06-20 (rawTs=1750377600)
+[optionsService] CLRB chainForDate summary: calls.length=1, puts.length=0
+[optionsService] CLRB sample call strikes: 0.5
+[optionsService] CLRB underlyingPrice: 0.5682
+[optionsService] CLRB pickATMContract returned call: CLRB250620C00000500
+[testOptions] CLRB call result: [object Object]
+[optionsService] CLRB raw expirationDates (first 5): Thu Jun 19 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Aug 14 2025 18:00:00 GMT-0600 (Mountain Daylight Time),Thu Nov 20 2025 17:00:00 GMT-0700 (Mountain Standard Time) (total=3)
+[optionsService] CLRB will search expirations from nearest up through: 2025-08-15
+[optionsService] CLRB chainForDate on 2025-06-20 → puts.length=0
+[optionsService] CLRB chainForDate on 2025-08-15 → puts.length=3
+[optionsService] CLRB using expiration date: 2025-08-15 (rawTs=1755216000)
+[optionsService] CLRB chainForDate summary: calls.length=3, puts.length=3
+[optionsService] CLRB sample put strikes: 0.5,5,7.5
+[optionsService] CLRB underlyingPrice: 0.5682
+[optionsService] CLRB pickATMContract returned put: CLRB250815P00000500
+[testOptions] CLRB put result: [object Object]
 
 ✅ JSON results written to C:\Users\noahy\Downloads\temp\server\scripts\optionsResults.json

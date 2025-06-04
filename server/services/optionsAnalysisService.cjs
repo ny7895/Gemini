@@ -13,23 +13,29 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function extractJson(text) {
+  // Remove ```json and ``` fences if present, then trim whitespace
+  const fencePattern = /^```(?:json)?\s*([\s\S]*)\s*```$/i;
+  const match = text.trim().match(fencePattern);
+  if (match && match[1]) {
+    return match[1].trim();
+  }
+  return text.trim();
+}
+
 async function analyzeOptionsWithGPT({ symbol, metrics, isDayTrade }) {
-  // 1) Throttle
   await sleep(1000);
 
-  // 2) Grab the entire option chains (all expirations up to two months out)
   let fullChains;
   try {
     fullChains = await getContractsInRange(symbol);
   } catch (err) {
     log.error(`❌ getContractsInRange failed for ${symbol}: ${err.message}`);
-    // fall back to just ATM picks if chain fetch fails
     fullChains = null;
   }
 
-  // 3) If fullChains is null, pick a single ATM call/put
   let callPick = null,
-      putPick = null;
+      putPick  = null;
 
   if (!fullChains) {
     try {
@@ -45,19 +51,15 @@ async function analyzeOptionsWithGPT({ symbol, metrics, isDayTrade }) {
       putPick = null;
     }
   } else {
-    // 4) If we do have fullChains, pick ATM from the nearest expiry
     const nearest = fullChains[0];
     callPick = pickATMFromList(nearest.calls, metrics.price);
     putPick  = pickATMFromList(nearest.puts, metrics.price);
   }
 
-  // 5) Build the GPT prompt, injecting all rawChains if available
   let callPrompt = null,
-      putPrompt = null;
+      putPrompt  = null;
 
   if (fullChains) {
-    // Build a JSON blob of every expiry + calls + puts,
-    // but trim to just the fields GPT needs
     const simplifiedChains = fullChains.map((entry) => ({
       expiry: entry.expiry,
       calls: entry.calls.map((c) => ({
@@ -170,7 +172,6 @@ Respond with JSON:
 }
     `.trim();
   } else {
-    // ─── Fallback to single‐ATM prompts if chains weren’t available ───────────
     if (callPick) {
       callPrompt = `
 You are an options strategist.
@@ -245,12 +246,10 @@ and still provide "action":"Hold" (or "action":"Sell") with rationale and exitPl
       `.trim();
     }
 
-    // If no option data at all, leave prompts null
     if (!callPick) callPrompt = null;
-    if (!putPick)  putPrompt = null;
+    if (!putPick)  putPrompt  = null;
   }
 
-  // 6) Send both prompts to GPT (only if they exist)
   let callAnalysis = {
       contractSymbol:    null,
       strike:            null,
@@ -284,7 +283,9 @@ and still provide "action":"Hold" (or "action":"Sell") with rationale and exitPl
         temperature: 0.2,
         max_tokens: 400,
       });
-      callAnalysis = JSON.parse(response.choices[0].message.content);
+      const raw = response.choices[0].message.content;
+      const jsonText = extractJson(raw);
+      callAnalysis = JSON.parse(jsonText);
     } catch (err) {
       log.warn(`⚠️ GPT failed on callPrompt for ${symbol}: ${err.message}`);
     }
@@ -298,13 +299,14 @@ and still provide "action":"Hold" (or "action":"Sell") with rationale and exitPl
         temperature: 0.2,
         max_tokens: 400,
       });
-      putAnalysis = JSON.parse(response.choices[0].message.content);
+      const raw = response.choices[0].message.content;
+      const jsonText = extractJson(raw);
+      putAnalysis = JSON.parse(jsonText);
     } catch (err) {
       log.warn(`⚠️ GPT failed on putPrompt for ${symbol}: ${err.message}`);
     }
   }
 
-  // 7) Return whichever structure makes sense
   return {
     callPick: callAnalysis.contractSymbol
       ? {
@@ -344,11 +346,10 @@ and still provide "action":"Hold" (or "action":"Sell") with rationale and exitPl
 
 module.exports = { analyzeOptionsWithGPT };
 
-// helper to pick ATM if we still need it
 function pickATMFromList(list, underlyingPrice) {
   if (!Array.isArray(list) || list.length === 0) return null;
-  let best = list[0],
-      bestDiff = Math.abs(best.strike - underlyingPrice);
+  let best = list[0];
+  let bestDiff = Math.abs(best.strike - underlyingPrice);
   for (const opt of list) {
     if (typeof opt.strike !== 'number') continue;
     const diff = Math.abs(opt.strike - underlyingPrice);
