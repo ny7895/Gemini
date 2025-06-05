@@ -270,10 +270,10 @@
     }
   },
   "CLRB": {
-    "ts": 1749051979757,
+    "ts": 1749090602379,
     "data": {
       "symbol": "CLRB",
-      "price": 0.599,
+      "price": 0.4617,
       "rsi": [
         null,
         null,
@@ -289,23 +289,22 @@
         null,
         null,
         null,
-        40,
-        40,
-        40,
-        46.66,
-        46.66,
-        46.66,
-        58.24,
-        91.27
+        57.14,
+        57.14,
+        63.23,
+        63.23,
+        63.23,
+        72.87,
+        92.33
       ],
-      "momentum": 1.1557,
+      "momentum": 0.6429,
       "volumeSpike": true,
       "support": 0.23999999463558197,
-      "resistance": 0.603600025177002,
+      "resistance": 0.46000000834465027,
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": -1.2173,
-      "newsCount": 0
+      "newsCount": 2
     }
   },
   "CURR": {
@@ -1410,10 +1409,10 @@
     }
   },
   "TSSI": {
-    "ts": 1749051979757,
+    "ts": 1749090602379,
     "data": {
       "symbol": "TSSI",
-      "price": 16.93,
+      "price": 17.17,
       "rsi": [
         null,
         null,
@@ -1429,19 +1428,18 @@
         null,
         null,
         null,
-        70.53,
-        68.74,
-        68.39,
-        65.8,
-        71.01,
-        71.05,
-        72.55,
-        76.34
+        68.31,
+        67.97,
+        65.53,
+        70.55,
+        70.59,
+        72.05,
+        75.89
       ],
-      "momentum": 0.1295,
+      "momentum": 0.1341,
       "volumeSpike": false,
-      "support": 6.869999885559082,
-      "resistance": 17.100000381469727,
+      "support": 6.949999809265137,
+      "resistance": 17.170000076293945,
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": 0.2383,
@@ -3038,7 +3036,7 @@
     }
   },
   "SPWH": {
-    "ts": 1749051979757,
+    "ts": 1749090602379,
     "data": {
       "symbol": "SPWH",
       "price": 2.58,
@@ -3058,13 +3056,12 @@
         null,
         null,
         64.22,
-        63.59,
-        60.41,
-        59.13,
-        57.19,
-        64,
-        72.08,
-        77.35
+        61.2,
+        59.98,
+        58.11,
+        64.46,
+        72.14,
+        77.24
       ],
       "momentum": 0.1121,
       "volumeSpike": true,
@@ -3073,7 +3070,7 @@
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": -0.8744,
-      "newsCount": 6
+      "newsCount": 1
     }
   },
   "VTLE": {
@@ -5345,10 +5342,10 @@
     }
   },
   "STSS": {
-    "ts": 1749051979757,
+    "ts": 1749090602379,
     "data": {
       "symbol": "STSS",
-      "price": 5.92,
+      "price": 6.31,
       "rsi": [
         null,
         null,
@@ -5364,23 +5361,22 @@
         null,
         null,
         null,
-        35.71,
-        32.09,
-        31.62,
-        31.62,
-        30.75,
-        27.78,
-        34.24,
-        70.43
+        30.84,
+        30.4,
+        30.4,
+        29.6,
+        26.85,
+        33.17,
+        72.21
       ],
-      "momentum": 0.5775,
+      "momentum": 0.6872,
       "volumeSpike": true,
       "support": 3.569999933242798,
-      "resistance": 5.900000095367432,
+      "resistance": 6.309999942779541,
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": -2223.9713,
-      "newsCount": 0
+      "newsCount": 1
     }
   },
   "TGL": {
@@ -5419,6 +5415,44 @@
       "revenueGrowth": null,
       "debtToEquity": null,
       "epsNormalized": -383.6121,
+      "newsCount": 0
+    }
+  },
+  "WHLR": {
+    "ts": 1749090602379,
+    "data": {
+      "symbol": "WHLR",
+      "price": 5.29,
+      "rsi": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        38.97,
+        36.47,
+        34.98,
+        33.23,
+        36.47,
+        36.36,
+        45.3
+      ],
+      "momentum": 0.2302,
+      "volumeSpike": true,
+      "support": 3.9800000190734863,
+      "resistance": 8.680000305175781,
+      "revenueGrowth": null,
+      "debtToEquity": null,
+      "epsNormalized": -684.4889,
       "newsCount": 0
     }
   }
